@@ -27,11 +27,11 @@
             if($user=="admin"){
                 $_SESSION["usuario"] = "admin"; // asignamos valor a la sesión
                 $_SESSION["rol"] = 1; // asignamos valor a la sesión
-                $color="aquamarine";               
+                $color="aquamarine"; // si el usaurio es admin se le asigna el color aquamarine              
             }else{
                 $_SESSION["usuario"] = "usuario"; // asignamos valor a la sesión 
                 $_SESSION["rol"] = 2; // asignamos valor a la sesión
-                $color="lightsalmon";
+                $color="lightsalmon";// si el usaurio es normal se le asigna el color lightsalmon
             }
         }else{
             header("Location:ej9_form_login.php?error=3");

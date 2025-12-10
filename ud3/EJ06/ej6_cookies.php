@@ -14,11 +14,12 @@
 
 <body class="container">
     <?php
-    if (isset($_GET["error"]) && $_GET["error"]) {
-        if ($_GET["error"] == 1) {
-            echo "❌ Error: Debe  introducir un nombre";
-        } else if ($_GET["error"] == 2) {
-            echo "❌ Error: Debe seleccionar un idioma";
+    //si se encuentra errores en la url, muestra mensajes de los errores específicamente
+    if(isset($_GET["error"]) && $_GET["error"]){
+        if($_GET["error"]==1){
+            echo("<h1>Debes introducir un nombre</h1>");
+        }else if($_GET["error"]=21){
+            echo("<h1>Debes seleccionar un idioma</h1>");
         }
     }
     ?>

@@ -10,31 +10,33 @@
 <body>
     <main class="contianer">
         <?php
-        //Se comprueba que solo se pueda enviar el fromulario desde el mismo dominio que el servidor
         if( parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != $_SERVER['HTTP_HOST']){
             echo "<div class='alert alert-error' role='alert'>❌ Error: Debe rellenar el
            formulario en nuestra web</div>";
-           header("Refresh:2; url=ej4_form:login.php");
+           header("Refresh:2; url=form_example.php");
         }
-        //validación de campos del formulario, si no cumple algún aspecto, redirige al formulario mostrando un error en los parámetros de la url
+        $nombre="";
+        $email="";
+        $password="";
+        if(isset($_POST["nombre"])&& !empty($_POST["nombre"])){
+            $nombre = htmlspecialchars($_POST["nombre"]);
+        }else{
+            header("Location:ejemploForm.php?error=1");
+            } 
         if(isset($_POST["email"])&& !empty($_POST["email"])){
             $email = htmlspecialchars($_POST["email"]);
-            $email_sanitizado = filter_var($email, FILTER_SANITIZE_EMAIL);
         }else{
-            header("Location:ej4_form_login.php?error=1");
+            header("Location:ejemploForm.php?error=2");
             } 
         if(isset($_POST["password"])&& !empty($_POST["password"])){
             $password = htmlspecialchars($_POST["password"]);
         }else{
-            header("Location:ej4_form_login.php?error=2");
+            header("Location:ejemploForm.php?error=3");
             } 
-        $user= [
-            "email" => $email_sanitizado,
-            "contraseña"=>$password
-        ]
         ?>
-        <h1>El email es: <?= $user['email'] ?> </h1>
-        <p>La contrseña es: <strong><?= $user["contraseña"] ?> </strong></p>
+        <h1>Hola, <?= $nombre ?> </h1>
+        <p>El email pasado es: <strong><?= $email ?> </strong></p>
+        <p>Y la contraseña es: <strong><?= $password ?> </strong></p>
     </main>
 </body>
 </html>

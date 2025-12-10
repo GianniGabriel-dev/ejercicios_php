@@ -15,7 +15,7 @@
 <body class="container p-4">
     <?php
         $fields=["name" ,"surname" ,"email" , "password" ,"gender" ,"address" ,"postalCode" ,"poblacion" , "provincia" ];
-    
+        //si se encuentra errores en la url, muestra mensajes de los errores específicamente
         if(isset($_GET["error"]) && $_GET["error"]){
             $errorCode = $fields[$_GET["error"]];
             echo("❌ Error en el campo $errorCode");

@@ -13,7 +13,7 @@
     <main class=" container flex-column">
         <section class=" mt-3 d-flex justify-content-center align-items-center">
         <?php
-            
+        //si se encuentra errores en la url, muestra mensajes de los errores específicamente
         if(isset($_GET["error"]) && $_GET["error"]){
             if($_GET["error"]==1){
                 echo"❌ Error: Email inválido";

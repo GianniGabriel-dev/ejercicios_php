@@ -16,12 +16,12 @@
     <?php
     session_start();
         $fields=["name" ,"surname" ,"email" , "password" ,"gender" ,"address" ,"postalCode" ,"poblacion" , "provincia" ];
-    
+        //si se encuentra errores en la url, muestra mensajes de los errores específicamente
         if(isset($_GET["error"]) && $_GET["error"]){
             $errorCode = $fields[$_GET["error"]];
             echo("❌ Error en el campo $errorCode<br>");
         }
-       
+        //si hay una sesión iniciada, muestra un mensaje personalizado para el usuario
         if(isset($_SESSION["usuario"])){
             $name= $_SESSION["usuario"];
             echo("<h1>Bienvenido de nuevo $name</h1>");

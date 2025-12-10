@@ -10,12 +10,13 @@
 <body>
     <main class="contianer">
         <?php
+        //Se comprueba que solo se pueda enviar el fromulario desde el mismo dominio que el servidor
         if( parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != $_SERVER['HTTP_HOST']){
             echo "<div class='alert alert-error' role='alert'>❌ Error: Debe rellenar el
            formulario en nuestra web</div>";
            header("Refresh:2; url=form_libros.php");
         }
-
+        //validación de campos del formulario, si no cumple algún aspecto, redirige al formulario mostrando un error en los parámetros de la url
         if(isset($_POST["departamento"])&& !empty($_POST["departamento"])){
             $departamento = htmlspecialchars($_POST["departamento"]);
         }else{
