@@ -25,14 +25,14 @@
         $poblacion=$_POST[ "poblacion"];
         $provincia=$_POST[ "provincia"];
 
-        $sql= "SELECT * FROM clientes WHERE email='$email'";
+        $sql= "SELECT * FROM clients WHERE email='$email'";
         $res = mysqli_query($conn, $sql);
         if (mysqli_num_rows($res) > 0) {
             header("location:gestion_clientes.php?cli=1");
             die();
 
         }else{
-            $sql = "INSERT INTO clientes (nombre, apellido, email, password, genero, direccion, cod_postal, poblacion, provincia)
+            $sql = "INSERT INTO clients (name, surname, email, password, gender, address, codpostal, poblacion, provincia)
             VALUES ('$nombre', '$apellidos', '$email', '$password', '$genero', '$direccion', '$cod_postal', '$poblacion', '$provincia')";
             $res = mysqli_query($conn, $sql);
             if($res){
@@ -44,11 +44,11 @@
     }
 ?>
 
-    <main class="container">
+    <main class="container min-vh-100 d-flex justify-content-center col-10 align-items-center">
 
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h2>Registro de cliente con MySQLite</h2>
+                <h2>Registrar nuevo cliente</h2>
             </div>
             <div class="card-body">
                 <form action="ins_cli_mysqli.php" method="post">
@@ -72,9 +72,8 @@
                         <div class="mb-3 col-6">
                             <label for="genero" class="form-label">Género</label>
                             <select class="form-select" name="genero" required>
-                                <option selected>Seleccione una opcion</option>
                                 <option value="f">Femenino</option>
-                                <option value="m">Masculino</option>
+                                <option selected value="m">Masculino</option>
                             </select>
                         </div>
                     </div>

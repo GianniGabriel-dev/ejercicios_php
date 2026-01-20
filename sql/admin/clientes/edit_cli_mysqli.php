@@ -28,8 +28,8 @@
             $provincia=$_POST[ "provincia"];
             $id= $_POST["id"];
 
-            $sql = "UPDATE clientes SET nombre='$nombre', apellido='$apellidos', genero='$genero', direccion='$direccion', 
-            cod_postal='$cod_postal', poblacion='$poblacion', provincia='$provincia' WHERE id=$id";
+            $sql = "UPDATE clients SET name='$nombre', surname='$apellidos', gender='$genero', address='$direccion', 
+            codpostal='$cod_postal', poblacion='$poblacion', provincia='$provincia' WHERE id=$id";
             $res = mysqli_query($conn, $sql);
             if($res){
                 header("location:gestion_clientes.php?cli=3"); //ok
@@ -52,14 +52,14 @@
                 <?php 
             if(isset($_GET["edit"])){
                 $id = intval($_GET["edit"]);
-                $sql= "SELECT * FROM clientes WHERE id=$id";
+                $sql= "SELECT * FROM clients WHERE id=$id";
                 $res = mysqli_query($conn, $sql);
             if(mysqli_num_rows($res)> 0){
                 $fila = mysqli_fetch_assoc($res);
-                $campos=["nombre" => $fila["nombre"], "apellido"=> $fila["apellido"],
+                $campos=["nombre" => $fila["name"], "apellido"=> $fila["surname"],
                           "email" => $fila["email"], 
-                          "genero" => $fila["genero"], "direccion"=> $fila["direccion"],
-                          "cod_postal" => $fila["cod_postal"], "poblacion"=> $fila["poblacion"],
+                          "genero" => $fila["gender"], "direccion"=> $fila["address"],
+                          "cod_postal" => $fila["codpostal"], "poblacion"=> $fila["poblacion"],
                           "provincia" => $fila["provincia"]
                 ];
             };

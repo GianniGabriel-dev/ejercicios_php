@@ -20,7 +20,7 @@ if (
     if (isset($_POST["password"]) && !empty($_POST["password"])) {
         $email = htmlspecialchars(trim($_POST["email"]));
         $password = htmlspecialchars(sha1($_POST["password"]));
-        $check = $conn->prepare("SELECT nombre, email, rol FROM usuarios
+        $check = $conn->prepare("SELECT email, email, role FROM users
     WHERE email = ? AND password =?");
         //Utilizamos bind_param para evitar inyecciones de código sql
         //Asocio las variables PHP a los placeholders (?) de la consulta preparada, indicando el tipo de dato.
@@ -37,7 +37,7 @@ if (
             $_SESSION["rol"] = $rol;
 
             $_SESSION["email"] = $emailDB;
-            header("location:./clientes/panelControl.php");
+            header("location:./panelControl.php");
             die();
         } else { //Si no existe el email
             echo '<div class="mt-4 alert alert-warning">⚠️ El email y la contraseña NO existen.</div>';
