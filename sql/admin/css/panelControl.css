@@ -1,0 +1,32 @@
+.card-hover {
+  transition: all 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    height: 50px;
+    border-radius: 50px;
+    width: 100%;
+    border: none;
+    padding-left: 45px; /* espacio para ícono */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.search-icon {
+    position: absolute;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    background: none;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #888;
+}

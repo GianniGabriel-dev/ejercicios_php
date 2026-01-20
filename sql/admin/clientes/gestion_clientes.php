@@ -5,31 +5,61 @@ if (!isset($_SESSION["nombre"])) {
     die();
 }
 ?>
+
 <?php
-include("../db/db_pdo.inc"); // Incluimos la conexión a la BD
-// Obtener solo los 10 primeros clientes
-$porPagina = 10;
-$pagina = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-//el offset indica desde qué registro empezar a mostrar
-$offset = ($pagina - 1) * $porPagina;
+    include("../db/db_pdo.inc"); // Incluimos la conexión a la BD
+    // Obtener solo los 12 primeros clientes
+    $porPagina = 12;
+    $pagina = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    //el offset indica desde qué registro empezar a mostrar
+    $offset = ($pagina - 1) * $porPagina;
+    //parámetros de búsqueda introducidos por el usuario, si no hay nada se pasa vacío
+    $search= isset($_GET["searchParams"]) ? $_GET["searchParams"] : "";
 
-$clientes = $pdo->query(
-    "SELECT * FROM clients ORDER BY id DESC LIMIT $porPagina OFFSET $offset"
-)->fetchAll(PDO::FETCH_ASSOC);
-//sacar el total de clientes para calcular cuantas paginas mostrar
-$totalClientes = $pdo->query("SELECT COUNT(*) FROM clients")->fetchColumn();
-$totalPaginas = ceil($totalClientes / $porPagina);
-//se guarda nombre y rol del usuario para mostrarlo en la sidebar
-$nombre = $_SESSION["nombre"];
-$rol = $_SESSION["rol"];
-$rol == 1 ? $nombreRol = "admin" : $nombreRol = "normal user";
+    $stmt = $pdo->prepare(
+        "SELECT * FROM clients
+         WHERE name LIKE :search
+            OR surname LIKE :search
+            OR id LIKE :search
+            OR codpostal LIKE :search
+            OR email LIKE :search
+         ORDER BY id DESC LIMIT 
+         $porPagina OFFSET $offset"
+    );
+    $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+    $stmt->bindValue(':limit', $porPagina, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
-if (isset($_GET["eliminar"])) {
-    $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
-    $pdo->prepare("DELETE FROM clients WHERE id=?")->execute([$id]);
-    header("location: gestion_clientes.php");
-}
+    $stmt->execute();
+    $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //sacar el total de clientes para calcular cuantas paginas mostrar
+    $totalClientes = $pdo->prepare(
+        "SELECT COUNT(*) FROM clients
+        WHERE name LIKE :search
+            OR surname LIKE :search
+            OR id LIKE :search
+            OR codpostal LIKE :search
+            OR email LIKE :search"
+    );
+    $totalClientes->bindValue(':search', "%$search%", PDO::PARAM_STR);
+    $totalClientes->execute();
+    $totalClientes = $totalClientes->fetchColumn();
+    
+    $totalPaginas = ceil($totalClientes / $porPagina);
+    //se guarda nombre y rol del usuario para mostrarlo en la sidebar
+    $nombre = $_SESSION["nombre"];
+    $rol = $_SESSION["rol"];
+    $rol == 1 ? $nombreRol = "admin" : $nombreRol = "normal user";
+
+    if (isset($_GET["eliminar"])) {
+        $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
+        $pdo->prepare("DELETE FROM clients WHERE id=?")->execute([$id]);
+        header("location: gestion_clientes.php");
+    }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -43,33 +73,32 @@ if (isset($_GET["eliminar"])) {
 </head>
 
 <body>
-<!--Aside-->
-    <aside class="p-3  bg-secondary-subtle position-absolute top-0 " style="height: 100%">
-        <div class="d-flex p-2 align-items-center">
-            <img src="../images/admin.jpg" alt="image of user" width="60" height="60" class="rounded-circle me-2">
-            <div class="card-body d-flex flex-column gap-0">
-                <p class="m-0 h6 font-weight-bold"><?= $nombre ?></p>
-                <p class="m-0"><?= $nombreRol ?></p>
+    <main class="d-flex overflow-hidden vh-100">
+        <aside class="p-3  bg-secondary-subtle h-100" >
+            <div class="d-flex p-2 align-items-center">
+                <img src="../images/admin.jpg" alt="image of user" width="60" height="60" class="rounded-circle me-2">
+                <div class="card-body d-flex flex-column gap-0">
+                    <p class="m-0 h6 font-weight-bold"><?= $nombre ?></p>
+                    <p class="m-0"><?= $nombreRol ?></p>
+                </div>
             </div>
-        </div>
-        <a href="../panelControl.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-            <span class="fs-5">Panel de Control</span>
-        </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="#" class="nav-link active" aria-current="page">Clientes</a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-dark">Inventario</a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-dark">Pedidos</a>
-            </li>
-        </ul>
-    </aside>
-    <main>
-        <div class="container left-4">
+            <a href="../panelControl.php" class="d-flex align-items-center mb-3 fs-5 mb-md-0 me-md-auto link-dark text-decoration-none">
+                Panel de Control
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" aria-current="page">Clientes</a>
+                </li>
+                <li>
+                    <a href="../videojuegos/gestion_videojuegos.php" class="nav-link link-dark">Inventario</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark">Pedidos</a>
+                </li>
+            </ul>
+        </aside>
+        <div class="container-fluid flex-grow-1 overflow-auto ">
             <h2 class="text-center mb-4 mt-4">📋 Gestión de Clientes</h2>
             <!-- Tabla de clientes -->
             <div class="card shadow  d-flex">
@@ -129,7 +158,7 @@ if (isset($_GET["eliminar"])) {
                                     <td>
                                         <a href="edit_cli_mysqli.php?edit=<?= $c['id']; ?>"
                                             class="btn btn-sm btn-warning">✏️</a>
-                                        <button type="button" class="btn btn-danger"
+                                        <button type="button" class="btn btn-sm btn-danger"
                                             onclick="eliminarCliente(<?=
                                                                         $c['id']; ?>)">
                                             🗑️

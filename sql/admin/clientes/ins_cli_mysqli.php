@@ -44,70 +44,84 @@
     }
 ?>
 
-    <main class="container min-vh-100 d-flex justify-content-center col-10 align-items-center">
+    <main class="container min-vh-100 d-flex justify-content-center align-items-center">
 
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h2>Registrar nuevo cliente</h2>
-            </div>
-            <div class="card-body">
-                <form action="ins_cli_mysqli.php" method="post">
-                    <div class="row">
-                        <div class="mb-3 col-6">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" name="nombre" class="form-control" id="nombre" required>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="apellidos" class="form-label">Apellidos</label>
-                            <input type="text" name="apellidos" class="form-control" id="apellidos" required>
-                        </div>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="row">
-                        <div class="mb-3 col-6">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" id="email" required>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="genero" class="form-label">Género</label>
-                            <select class="form-select" name="genero" required>
-                                <option value="f">Femenino</option>
-                                <option selected value="m">Masculino</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" id="password" required>
-                    </div>
-                    <div class="col-12">
-                        <div class="mb-3">
-                            <label for="direccion" class="form-label">Direccion</label>
-                            <input type="text" name="direccion" class="form-control" id="direccion" required>
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-around">
-                        <div class="mb-3 col-3">
-                            <label for="cod_postal" class="form-label">Código Postal</label>
-                            <input type="text" name="cod_postal" class="form-control" id="cod_postal" required>
-                        </div>
-                        <div class="mb-3 col-3">
-                            <label for="poblacion" class="form-label">Población</label>
-                            <input type="text" name="poblacion" class="form-control" id="poblacion" required>
-                        </div>
-                        <div class="mb-3 col-3">
-                            <label for="provincia" class="form-label">Provincia</label>
-                            <input type="text" name="provincia" class="form-control" id="provincia" required>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center mx-1">
-                        <button type="submit" class="btn btn-success col-12">Enviar</button>
-                    </div>
-                </form>
-            </div>
+    <div class="card shadow-lg col-12 col-md-10 col-lg-8">
+        <div class="card-header bg-primary text-white text-center">
+        <h3 class="mb-0">🧾 Registrar nuevo cliente</h3>
         </div>
+
+        <div class="card-body px-4 py-4">
+        <form action="ins_cli_mysqli.php" method="post">
+
+            <!-- Nombre y Apellidos -->
+            <div class="row g-3">
+            <div class="col-md-6">
+                <label for="nombre" class="form-label fw-semibold">Nombre</label>
+                <input type="text" name="nombre" class="form-control form-control-lg" id="nombre" placeholder="Juan" required>
+            </div>
+            <div class="col-md-6">
+                <label for="apellidos" class="form-label fw-semibold">Apellidos</label>
+                <input type="text" name="apellidos" class="form-control form-control-lg" id="apellidos" placeholder="Pérez García" required>
+            </div>
+            </div>
+
+            <!-- Email y Género -->
+            <div class="row g-3 mt-2">
+            <div class="col-md-6">
+                <label for="email" class="form-label fw-semibold">Email</label>
+                <input type="email" name="email" class="form-control form-control-lg" id="email" placeholder="correo@ejemplo.com" required>
+            </div>
+            <div class="col-md-6">
+                <label for="genero" class="form-label fw-semibold">Género</label>
+                <select class="form-select form-select-lg" name="genero" id="genero" required>
+                <option value="" disabled selected>Selecciona género</option>
+                <option value="f">Femenino</option>
+                <option value="m">Masculino</option>
+                <option value="o">Otro</option>
+                </select>
+            </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mt-3">
+            <label for="password" class="form-label fw-semibold">Contraseña</label>
+            <input type="password" name="password" class="form-control form-control-lg" id="password" placeholder="••••••••" required>
+            </div>
+
+            <!-- Dirección -->
+            <div class="mt-3">
+            <label for="direccion" class="form-label fw-semibold">Dirección</label>
+            <input type="text" name="direccion" class="form-control form-control-lg" id="direccion" placeholder="Calle, número, piso..." required>
+            </div>
+
+            <!-- Código Postal, Población y Provincia -->
+            <div class="row g-3 mt-2">
+            <div class="col-md-4">
+                <label for="cod_postal" class="form-label fw-semibold">Código Postal</label>
+                <input type="text" name="cod_postal" class="form-control form-control-lg" id="cod_postal" placeholder="28001" required>
+            </div>
+            <div class="col-md-4">
+                <label for="poblacion" class="form-label fw-semibold">Población</label>
+                <input type="text" name="poblacion" class="form-control form-control-lg" id="poblacion" placeholder="Madrid" required>
+            </div>
+            <div class="col-md-4">
+                <label for="provincia" class="form-label fw-semibold">Provincia</label>
+                <input type="text" name="provincia" class="form-control form-control-lg" id="provincia" placeholder="Madrid" required>
+            </div>
+            </div>
+
+            <!-- Botón -->
+            <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-success btn-lg">
+                ✅ Guardar cliente
+            </button>
+            </div>
+
+        </form>
+        </div>
+    </div>
+
     </main>
 
 
