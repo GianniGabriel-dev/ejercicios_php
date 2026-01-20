@@ -7,8 +7,19 @@ if (!isset($_SESSION["nombre"])) {
 ?>
 <?php
 include("../db/db_pdo.inc"); // Incluimos la conexión a la BD
-// Obtener todos los clientes
-$clientes = $pdo->query("SELECT * FROM clients ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+// Obtener solo los 10 primeros clientes
+$porPagina = 10;
+$pagina = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+//el offset indica desde qué registro empezar a mostrar
+$offset = ($pagina - 1) * $porPagina;
+
+$clientes = $pdo->query(
+    "SELECT * FROM clients ORDER BY id DESC LIMIT $porPagina OFFSET $offset"
+)->fetchAll(PDO::FETCH_ASSOC);
+//sacar el total de clientes para calcular cuantas paginas mostrar
+$totalClientes = $pdo->query("SELECT COUNT(*) FROM clients")->fetchColumn();
+$totalPaginas = ceil($totalClientes / $porPagina);
+//se guarda nombre y rol del usuario para mostrarlo en la sidebar
 $nombre = $_SESSION["nombre"];
 $rol = $_SESSION["rol"];
 $rol == 1 ? $nombreRol = "admin" : $nombreRol = "normal user";
@@ -25,8 +36,10 @@ if (isset($_GET["eliminar"])) {
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Clientes</title>
+    <link rel="stylesheet" href="../css/panelControl.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min
 .css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -48,7 +61,7 @@ if (isset($_GET["eliminar"])) {
                 <a href="#" class="nav-link active" aria-current="page">Clientes</a>
             </li>
             <li>
-                <a href="#" class="nav-link link-dark">Productos</a>
+                <a href="#" class="nav-link link-dark">Inventario</a>
             </li>
             <li>
                 <a href="#" class="nav-link link-dark">Pedidos</a>
@@ -59,10 +72,10 @@ if (isset($_GET["eliminar"])) {
         <div class="container left-4">
             <h2 class="text-center mb-4 mt-4">📋 Gestión de Clientes</h2>
             <!-- Tabla de clientes -->
-            <div class="card shadow">
+            <div class="card shadow  d-flex">
                 <div class="card-header bg-secondary text-white">📋 Lista de
                     Clientes</div>
-                <div class="card-body">
+                <div class="card-body flex-column">
                     <?php
                     if (isset($_GET["cli"]) && $_GET["cli"]) {
                         if ($_GET["cli"] == 1) {
@@ -76,9 +89,15 @@ if (isset($_GET["eliminar"])) {
                         }
                     }
                     ?>
-                    <div class="row mb-3 me-2 float-end">
-                        <a href="ins_cli_mysqli.php" class="btn btn-success">➕
-                            Nuevo Cliente</a>
+                        <div class="d-flex justify-content-between align-items-center mb-3 me-2 gap-3">
+                                <form method="GET" action="" class="search-container col-10 d-flex align-items-center">
+                                    <input type="text"  name="searchParams" class="search-input" placeholder="Search...">
+                                    <button type="submit" class="fas fa-search search-icon "></button>
+                                </form >
+                                <a href="ins_cli_mysqli.php" class="btn btn-success col-2">➕
+                                    Nuevo Cliente
+                                </a>
+                        </div>
                     </div>
                     <table class="table table-striped table-hover align-middle">
                         <thead class="table-dark">
@@ -120,6 +139,28 @@ if (isset($_GET["eliminar"])) {
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <nav aria-label="Paginación">
+                        <ul class="pagination justify-content-center mb-3">
+
+                            <!-- Anterior, resta 1 a la página actual si la pagina llega a 1 deshabilita el boton para impedir un error en la consulta-->
+                            <li class="page-item <?= ($pagina <= 1) ? 'disabled' : '' ?>">
+                                <a class="page-link" href="?page=<?= $pagina - 1 ?>">Previous</a>
+                            </li>
+
+                            <!-- Números -->
+                            <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                                <li class="page-item <?= ($i == $pagina) ? 'active' : '' ?>">
+                                    <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                                </li>
+                            <?php endfor; ?>
+
+                            <!-- Siguiente -->
+                            <li class="page-item <?= ($pagina >= $totalPaginas) ? 'disabled' : '' ?>">
+                                <a class="page-link" href="?page=<?= $pagina + 1 ?>">Next</a>
+                            </li>
+
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
