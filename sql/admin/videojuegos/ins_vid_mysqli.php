@@ -14,32 +14,52 @@
 <body>
     <?php
     include "../db/db.inc";
-    if(isset($_POST["nombre"]) &&  !empty($_POST["nombre"])){
-        $nombre=$_POST[ "nombre"];
-        $apellidos=$_POST[ "apellidos"];
-        $email=$_POST[ "email"];
-        $password= $_POST["password"];
-        $genero=$_POST[ "genero"];
-        $direccion=$_POST[ "direccion"];
-        $cod_postal=$_POST[ "cod_postal"];
-        $poblacion=$_POST[ "poblacion"];
-        $provincia=$_POST[ "provincia"];
+    if(isset($_POST["name"]) &&  !empty($_POST["name"])){
+        $name=$_POST[ "name"];
+        $developer=$_POST[ "developer"];
+        $platforms=$_POST[ "platforms"];
+        $genres= $_POST["genres"];
+        $released_at=$_POST[ "released_at"];
+        $price=$_POST[ "price"];
+        $stock=$_POST[ "stock"];
+        $discount=$_POST[ "discount"];
+        function uploadPhoto(){
+            // Ruta donde quieres guardar el archivo
+            $destino = "../images/";
+            $nombre_temp = $_FILES["image"]["tmp_name"];
+            $nombre= uniqid(). $_FILES["image"]["name"];
+            $ruta_final = $destino . $nombre;
 
-        $sql= "SELECT * FROM clients WHERE email='$email'";
-        $res = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            header("location:gestion_clientes.php?cli=1");
-            die();
+            $fileName = basename($nombre);
+            $miExtension= strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-        }else{
-            $sql = "INSERT INTO clients (name, surname, email, password, gender, address, codpostal, poblacion, provincia)
-            VALUES ('$nombre', '$apellidos', '$email', '$password', '$genero', '$direccion', '$cod_postal', '$poblacion', '$provincia')";
-            $res = mysqli_query($conn, $sql);
-            if($res){
-                header("location:gestion_clientes.php?cli=2"); //opercion exitosa
-            }else{
-                header("location:gestion_clientes.php?cli=4");//opercaion fallida
+            $allowedExtensions=["jpg", "jpeg", "png", "gif"];
+            //se comprueba la extensión del archivo
+            if(in_array($miExtension,$allowedExtensions)){
+                // Mueve el archivo temporal a la carpeta de destino
+                if (move_uploaded_file($nombre_temp, $ruta_final)) {
+                    return $ruta_final;
+                }
+                return false;
             }
+        }
+        //validación de campos del formulario, si no cumple algún aspecto, redirige al formulario mostrando un error en los parámetros de la url
+        if(isset($_FILES["image"])&& !empty($_FILES["image"])){
+            $imagen= uploadPhoto();
+            if(!$imagen){
+                header("Location:form_imagen.php?error=1");
+            }
+        }else{
+            header("Location:form_imagen.php?error=1");
+        } 
+
+        $sql = "INSERT INTO games (imageUrl, name, developer, platforms, genres, released_at, price, stock, discount)
+        VALUES ('$imagen','$name', '$developer', '$platforms', '$genres', '$released_at', '$price', '$stock', '$discount')";
+        $res = mysqli_query($conn, $sql);
+        if($res){
+            header("location:gestion_videojuegos.php?cli=2"); //opercion exitosa
+        }else{
+            header("location:gestion_videojuegos.php?cli=4");//opercaion fallida
         }
     }
 ?>
@@ -52,7 +72,7 @@
     </div>
 
     <div class="card-body px-4 py-4">
-      <form action="ins_videojuego.php" method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data">
 
         <!-- Imagen -->
         <div class="mb-3">
@@ -67,8 +87,8 @@
             <input type="text" name="name" id="name" class="form-control form-control-lg" placeholder="The Legend of Zelda" required>
           </div>
           <div class="col-md-6">
-            <label for="desarrolladora" class="form-label fw-semibold">Desarrolladora</label>
-            <input type="text" name="desarrolladora" id="desarrolladora" class="form-control form-control-lg" placeholder="Nintendo" required>
+            <label for="developer" class="form-label fw-semibold">Desarrolladora</label>
+            <input type="text" name="developer" id="developer" class="form-control form-control-lg" placeholder="Nintendo" required>
           </div>
         </div>
 
@@ -79,8 +99,8 @@
             <input type="text" name="platforms" id="platforms" class="form-control form-control-lg" placeholder="PC, PS5, Xbox..." required>
           </div>
           <div class="col-md-6">
-            <label for="generos" class="form-label fw-semibold">Géneros</label>
-            <input type="text" name="generos" id="generos" class="form-control form-control-lg" placeholder="Acción, RPG, Aventura..." required>
+            <label for="genres" class="form-label fw-semibold">Géneros</label>
+            <input type="text" name="genres" id="genres" class="form-control form-control-lg" placeholder="Acción, RPG, Aventura..." required>
           </div>
         </div>
 
@@ -101,8 +121,8 @@
             <input type="number" name="stock" id="stock" class="form-control form-control-lg" min="0" placeholder="25" required>
           </div>
           <div class="col-md-4">
-            <label for="disscount" class="form-label fw-semibold">Descuento (%)</label>
-            <input type="number" name="disscount" id="disscount" class="form-control form-control-lg" min="0" max="100" placeholder="10">
+            <label for="discount" class="form-label fw-semibold">Descuento (%)</label>
+            <input type="number" name="discount" id="discount" class="form-control form-control-lg" min="0" max="100" placeholder="10">
           </div>
         </div>
 

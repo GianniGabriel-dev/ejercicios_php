@@ -16,37 +16,30 @@ if (!isset($_SESSION["nombre"])) {
     //parámetros de búsqueda introducidos por el usuario, si no hay nada se pasa vacío
     $search= isset($_GET["searchParams"]) ? $_GET["searchParams"] : "";
 
-    $stmt = $pdo->prepare(
-        "SELECT * FROM clients
-         WHERE name LIKE :search
-            OR surname LIKE :search
-            OR id LIKE :search
-            OR codpostal LIKE :search
-            OR email LIKE :search
-         ORDER BY id DESC LIMIT 
-         $porPagina OFFSET $offset"
-    );
-    $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
-    $stmt->bindValue(':limit', $porPagina, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt = $pdo->prepare(
+    "SELECT * FROM games
+     WHERE name LIKE :search
+     ORDER BY id DESC
+     LIMIT :limit OFFSET :offset"
+);
 
-    $stmt->execute();
-    $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+$stmt->bindValue(':limit', $porPagina, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+$stmt->execute();
+$games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     //sacar el total de clientes para calcular cuantas paginas mostrar
-    $totalClientes = $pdo->prepare(
-        "SELECT COUNT(*) FROM clients
-        WHERE name LIKE :search
-            OR surname LIKE :search
-            OR id LIKE :search
-            OR codpostal LIKE :search
-            OR email LIKE :search"
+    $totalGames = $pdo->prepare(
+        "SELECT COUNT(*) FROM games
+        WHERE name LIKE :search"
     );
-    $totalClientes->bindValue(':search', "%$search%", PDO::PARAM_STR);
-    $totalClientes->execute();
-    $totalClientes = $totalClientes->fetchColumn();
+    $totalGames->bindValue(':search', "%$search%", PDO::PARAM_STR);
+    $totalGames->execute();
+    $totalGames = $totalGames->fetchColumn();
     
-    $totalPaginas = ceil($totalClientes / $porPagina);
+    $totalPaginas = ceil($totalGames / $porPagina);
     //se guarda nombre y rol del usuario para mostrarlo en la sidebar
     $nombre = $_SESSION["nombre"];
     $rol = $_SESSION["rol"];
@@ -54,8 +47,8 @@ if (!isset($_SESSION["nombre"])) {
 
     if (isset($_GET["eliminar"])) {
         $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
-        $pdo->prepare("DELETE FROM clients WHERE id=?")->execute([$id]);
-        header("location: gestion_clientes.php");
+        $pdo->prepare("DELETE FROM games WHERE id=?")->execute([$id]);
+        header("location: gestion_videojuegos.php");
     }
 ?>
 
@@ -109,9 +102,9 @@ if (!isset($_SESSION["nombre"])) {
                         if ($_GET["cli"] == 1) {
                             echo '<div class="alert alert-warning">⚠️ El email ya existe en la base de datos.</div>';
                         } elseif ($_GET["cli"] == 2) {
-                            echo '<div class="alert alert-success">✅ Cliente insertado correctamente.</div>';
+                            echo '<div class="alert alert-success">✅ Videojuego insertado correctamente.</div>';
                         } elseif ($_GET["cli"] == 3) {
-                            echo '<div class="alert alert-success">✅ Cliente actualizado correctamente.</div>';
+                            echo '<div class="alert alert-success">✅ Videojuego actualizado correctamente.</div>';
                         } elseif ($_GET["cli"] == 4) {
                             echo '<div class="alert alert-danger">❌ Eror al ingresar datos, vielva a intentarlo.</div>';
                         }
@@ -144,24 +137,30 @@ if (!isset($_SESSION["nombre"])) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($clientes as $c): ?>
+                            <?php foreach ($games as $g): ?>
                                 <tr>
-                                    <td><?= $c['id'] ?></td>
-                                    <td><?= htmlspecialchars($c['name']) ?></td>
-                                    <td><?= htmlspecialchars($c['surname']) ?></td>
-                                    <td><?= htmlspecialchars($c['email']) ?></td>
-                                    <td><?= $c['gender'] ?></td>
-                                    <td><?= htmlspecialchars($c['address']) ?></td>
-                                    <td><?= $c['codpostal'] ?></td>
-                                    <td><?= htmlspecialchars($c['poblacion']) ?></td>
-                                    <td><?= htmlspecialchars($c['provincia']) ?></td>
-                                    <td></td>
+                                    <td><?= $g['id'] ?></td>
                                     <td>
-                                        <a href="edit_cli_mysqli.php?edit=<?= $c['id']; ?>"
+                                        <img 
+                                            width="70" 
+                                            height="90" 
+                                            src="<?= htmlspecialchars($g['imageUrl']) ?>" 
+                                            alt="image of game <?= htmlspecialchars($g['name']) ?>">
+                                    </td>
+                                    <td><?= htmlspecialchars($g['name']) ?></td>
+                                    <td><?= htmlspecialchars($g['developer']) ?></td>
+                                    <td><?= $g['platforms'] ?></td>
+                                    <td><?= htmlspecialchars($g['genres']) ?></td>
+                                    <td><?= $g['released_at'] ?></td>
+                                    <td><?= htmlspecialchars($g['price']) ?></td>
+                                    <td><?= htmlspecialchars($g['stock']) ?></td>
+                                    <td><?= htmlspecialchars($g['discount']) ?></td>
+                                    <td>
+                                        <a href="edit_cli_mysqli.php?edit=<?= $g['id']; ?>"
                                             class="btn btn-sm btn-warning">✏️</a>
                                         <button type="button" class="btn btn-sm btn-danger"
                                             onclick="eliminarCliente(<?=
-                                                                        $c['id']; ?>)">
+                                                                        $g['id']; ?>)">
                                             🗑️
                                         </button>
                                     </td>
@@ -215,12 +214,12 @@ if (!isset($_SESSION["nombre"])) {
     </main>
 </body>
 <script>
-    function eliminarCliente(numcliente) {
+    function eliminarCliente(idGame) {
         const modal = new
         bootstrap.Modal(document.getElementById('confirmModal'));
         modal.show();
         document.getElementById('confirmDeleteBtn').onclick = () => {
-            window.location.href = 'gestion_clientes.php?eliminar=' + numcliente
+            window.location.href = 'gestion_videojuegos.php?eliminar=' + idGame
             modal.hide();
         };
     }

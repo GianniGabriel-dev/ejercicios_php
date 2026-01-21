@@ -78,7 +78,6 @@
                 <option value="" disabled selected>Selecciona género</option>
                 <option value="f">Femenino</option>
                 <option value="m">Masculino</option>
-                <option value="o">Otro</option>
                 </select>
             </div>
             </div>

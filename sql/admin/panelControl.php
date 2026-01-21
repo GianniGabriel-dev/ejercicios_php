@@ -43,7 +43,7 @@
                 <a href="./clientes/gestion_clientes.php" class="nav-link link-dark" >Clientes</a>
             </li>
             <li>
-                <a href="#" class="nav-link link-dark">Inventario</a>
+                <a href="./videojuegos/gestion_videojuegos.php" class="nav-link link-dark">Inventario</a>
             </li>
             <li>
                 <a href="#" class="nav-link link-dark">Pedidos</a>

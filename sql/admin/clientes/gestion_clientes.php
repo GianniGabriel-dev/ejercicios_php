@@ -8,8 +8,8 @@ if (!isset($_SESSION["nombre"])) {
 
 <?php
     include("../db/db_pdo.inc"); // Incluimos la conexión a la BD
-    // Obtener solo los 12 primeros clientes
-    $porPagina = 12;
+    // Obtener solo los 4 primeros clientes
+    $porPagina = 4;
     $pagina = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     //el offset indica desde qué registro empezar a mostrar
     $offset = ($pagina - 1) * $porPagina;
@@ -23,8 +23,8 @@ if (!isset($_SESSION["nombre"])) {
             OR id LIKE :search
             OR codpostal LIKE :search
             OR email LIKE :search
-         ORDER BY id DESC LIMIT 
-         $porPagina OFFSET $offset"
+         ORDER BY id DESC 
+         LIMIT $porPagina OFFSET $offset"
     );
     $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
     $stmt->bindValue(':limit', $porPagina, PDO::PARAM_INT);
@@ -38,8 +38,6 @@ if (!isset($_SESSION["nombre"])) {
         "SELECT COUNT(*) FROM clients
         WHERE name LIKE :search
             OR surname LIKE :search
-            OR id LIKE :search
-            OR codpostal LIKE :search
             OR email LIKE :search"
     );
     $totalClientes->bindValue(':search', "%$search%", PDO::PARAM_STR);
@@ -169,23 +167,29 @@ if (!isset($_SESSION["nombre"])) {
                         </tbody>
                     </table>
                     <nav aria-label="Paginación">
+                        <?php 
+                            $params = "";
+                            //si hay parametros de busca se guardan para que luego no se pierdan al cambiar de página
+                            if(isset($_GET["searchParams"]))
+                                $params = "&searchParams=".$_GET["searchParams"];
+                        ?>
                         <ul class="pagination justify-content-center mb-3">
 
                             <!-- Anterior, resta 1 a la página actual si la pagina llega a 1 deshabilita el boton para impedir un error en la consulta-->
                             <li class="page-item <?= ($pagina <= 1) ? 'disabled' : '' ?>">
-                                <a class="page-link" href="?page=<?= $pagina - 1 ?>">Previous</a>
+                                <a class="page-link" href="?page=<?= $pagina - 1 ?><?= $params ?>">Previous</a>
                             </li>
 
                             <!-- Números -->
                             <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
                                 <li class="page-item <?= ($i == $pagina) ? 'active' : '' ?>">
-                                    <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                                    <a class="page-link" href="?page=<?= $i ?><?= $params ?>"><?= $i ?></a>
                                 </li>
                             <?php endfor; ?>
 
                             <!-- Siguiente -->
-                            <li class="page-item <?= ($pagina >= $totalPaginas) ? 'disabled' : '' ?>">
-                                <a class="page-link" href="?page=<?= $pagina + 1 ?>">Next</a>
+                            <li class="page-item <?= ($pagina >= $totalPaginas) ? 'disabled' : '' ?>"> 
+                                <a class="page-link" href="?page=<?= $pagina + 1 ?><?= $params ?>">Next</a>
                             </li>
 
                         </ul>
