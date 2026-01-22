@@ -13,36 +13,36 @@
 
 <body>
     <?php
-    include "../db/db.inc";
-    if(isset($_POST["nombre"]) &&  !empty($_POST["nombre"])){
-        $nombre=$_POST[ "nombre"];
-        $apellidos=$_POST[ "apellidos"];
-        $email=$_POST[ "email"];
-        $password= $_POST["password"];
-        $genero=$_POST[ "genero"];
-        $direccion=$_POST[ "direccion"];
-        $cod_postal=$_POST[ "cod_postal"];
-        $poblacion=$_POST[ "poblacion"];
-        $provincia=$_POST[ "provincia"];
+        include "../db/db.inc";
+        if (isset($_POST["nombre"]) && ! empty($_POST["nombre"])) {
+            $nombre     = $_POST["nombre"];
+            $apellidos  = $_POST["apellidos"];
+            $email      = $_POST["email"];
+            $password   = $_POST["password"];
+            $genero     = $_POST["genero"];
+            $direccion  = $_POST["direccion"];
+            $cod_postal = $_POST["cod_postal"];
+            $poblacion  = $_POST["poblacion"];
+            $provincia  = $_POST["provincia"];
 
-        $sql= "SELECT * FROM clients WHERE email='$email'";
-        $res = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            header("location:gestion_clientes.php?cli=1");
-            die();
-
-        }else{
-            $sql = "INSERT INTO clients (name, surname, email, password, gender, address, codpostal, poblacion, provincia)
-            VALUES ('$nombre', '$apellidos', '$email', '$password', '$genero', '$direccion', '$cod_postal', '$poblacion', '$provincia')";
+            $sql = "SELECT * FROM clients WHERE email='$email'";
             $res = mysqli_query($conn, $sql);
-            if($res){
-                header("location:gestion_clientes.php?cli=2"); //opercion exitosa
-            }else{
-                header("location:gestion_clientes.php?cli=4");//opercaion fallida
+            if (mysqli_num_rows($res) > 0) {
+                header("location:gestion_clientes.php?cli=1");
+                die();
+
+            } else {
+                $sql = "INSERT INTO clients (name, surname, email, password, gender, address, codpostal, poblacion, provincia)
+            VALUES ('$nombre', '$apellidos', '$email', '$password', '$genero', '$direccion', '$cod_postal', '$poblacion', '$provincia')";
+                $res = mysqli_query($conn, $sql);
+                if ($res) {
+                    header("location:gestion_clientes.php?cli=2"); //opercion exitosa
+                } else {
+                    header("location:gestion_clientes.php?cli=4"); //opercaion fallida
+                }
             }
         }
-    }
-?>
+    ?>
 
     <main class="container min-vh-100 d-flex justify-content-center align-items-center">
 

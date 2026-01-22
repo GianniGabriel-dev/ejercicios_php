@@ -1,29 +1,29 @@
 <?php
-session_start();
-if (!isset($_SESSION["nombre"])) {
+    session_start();
+    if (! isset($_SESSION["nombre"])) {
     header("location: ../index.php");
     die();
-}
+    }
 ?>
 
 <?php
-    include("../db/db_pdo.inc"); // Incluimos la conexión a la BD
-    // Obtener solo los 4 primeros clientes
+    include "../db/db_pdo.inc"; // Incluimos la conexión a la BD
+                            // Obtener solo los 4 primeros clientes
     $porPagina = 4;
-    $pagina = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $pagina    = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     //el offset indica desde qué registro empezar a mostrar
     $offset = ($pagina - 1) * $porPagina;
     //parámetros de búsqueda introducidos por el usuario, si no hay nada se pasa vacío
-    $search= isset($_GET["searchParams"]) ? $_GET["searchParams"] : "";
+    $search = isset($_GET["searchParams"]) ? $_GET["searchParams"] : "";
 
     $stmt = $pdo->prepare(
-        "SELECT * FROM clients
+    "SELECT * FROM clients
          WHERE name LIKE :search
             OR surname LIKE :search
             OR id LIKE :search
             OR codpostal LIKE :search
             OR email LIKE :search
-         ORDER BY id DESC 
+         ORDER BY id DESC
          LIMIT $porPagina OFFSET $offset"
     );
     $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
@@ -35,7 +35,7 @@ if (!isset($_SESSION["nombre"])) {
 
     //sacar el total de clientes para calcular cuantas paginas mostrar
     $totalClientes = $pdo->prepare(
-        "SELECT COUNT(*) FROM clients
+    "SELECT COUNT(*) FROM clients
         WHERE name LIKE :search
             OR surname LIKE :search
             OR email LIKE :search"
@@ -43,17 +43,17 @@ if (!isset($_SESSION["nombre"])) {
     $totalClientes->bindValue(':search', "%$search%", PDO::PARAM_STR);
     $totalClientes->execute();
     $totalClientes = $totalClientes->fetchColumn();
-    
+
     $totalPaginas = ceil($totalClientes / $porPagina);
     //se guarda nombre y rol del usuario para mostrarlo en la sidebar
-    $nombre = $_SESSION["nombre"];
-    $rol = $_SESSION["rol"];
+    $nombre                = $_SESSION["nombre"];
+    $rol                   = $_SESSION["rol"];
     $rol == 1 ? $nombreRol = "admin" : $nombreRol = "normal user";
 
     if (isset($_GET["eliminar"])) {
-        $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
-        $pdo->prepare("DELETE FROM clients WHERE id=?")->execute([$id]);
-        header("location: gestion_clientes.php");
+    $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
+    $pdo->prepare("DELETE FROM clients WHERE id=?")->execute([$id]);
+    header("location: gestion_clientes.php");
     }
 ?>
 
@@ -76,8 +76,8 @@ if (!isset($_SESSION["nombre"])) {
             <div class="d-flex p-2 align-items-center">
                 <img src="../images/admin.jpg" alt="image of user" width="60" height="60" class="rounded-circle me-2">
                 <div class="card-body d-flex flex-column gap-0">
-                    <p class="m-0 h6 font-weight-bold"><?= $nombre ?></p>
-                    <p class="m-0"><?= $nombreRol ?></p>
+                    <p class="m-0 h6 font-weight-bold"><?php echo $nombre ?></p>
+                    <p class="m-0"><?php echo $nombreRol ?></p>
                 </div>
             </div>
             <a href="../panelControl.php" class="d-flex align-items-center mb-3 fs-5 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -104,17 +104,17 @@ if (!isset($_SESSION["nombre"])) {
                     Clientes</div>
                 <div class="card-body flex-column">
                     <?php
-                    if (isset($_GET["cli"]) && $_GET["cli"]) {
-                        if ($_GET["cli"] == 1) {
-                            echo '<div class="alert alert-warning">⚠️ El email ya existe en la base de datos.</div>';
-                        } elseif ($_GET["cli"] == 2) {
-                            echo '<div class="alert alert-success">✅ Cliente insertado correctamente.</div>';
-                        } elseif ($_GET["cli"] == 3) {
-                            echo '<div class="alert alert-success">✅ Cliente actualizado correctamente.</div>';
-                        } elseif ($_GET["cli"] == 4) {
-                            echo '<div class="alert alert-danger">❌ Eror al ingresar datos, vielva a intentarlo.</div>';
+                        if (isset($_GET["cli"]) && $_GET["cli"]) {
+                            if ($_GET["cli"] == 1) {
+                                echo '<div class="alert alert-warning">⚠️ El email ya existe en la base de datos.</div>';
+                            } elseif ($_GET["cli"] == 2) {
+                                echo '<div class="alert alert-success">✅ Cliente insertado correctamente.</div>';
+                            } elseif ($_GET["cli"] == 3) {
+                                echo '<div class="alert alert-success">✅ Cliente actualizado correctamente.</div>';
+                            } elseif ($_GET["cli"] == 4) {
+                                echo '<div class="alert alert-danger">❌ Eror al ingresar datos, vielva a intentarlo.</div>';
+                            }
                         }
-                    }
                     ?>
                         <div class="d-flex justify-content-between align-items-center mb-3 me-2 gap-3">
                                 <form method="GET" action="" class="search-container col-10 d-flex align-items-center">
@@ -144,21 +144,20 @@ if (!isset($_SESSION["nombre"])) {
                         <tbody>
                             <?php foreach ($clientes as $c): ?>
                                 <tr>
-                                    <td><?= $c['id'] ?></td>
-                                    <td><?= htmlspecialchars($c['name']) ?></td>
-                                    <td><?= htmlspecialchars($c['surname']) ?></td>
-                                    <td><?= htmlspecialchars($c['email']) ?></td>
-                                    <td><?= $c['gender'] ?></td>
-                                    <td><?= htmlspecialchars($c['address']) ?></td>
-                                    <td><?= $c['codpostal'] ?></td>
-                                    <td><?= htmlspecialchars($c['poblacion']) ?></td>
-                                    <td><?= htmlspecialchars($c['provincia']) ?></td>
+                                    <td><?php echo $c['id'] ?></td>
+                                    <td><?php echo htmlspecialchars($c['name']) ?></td>
+                                    <td><?php echo htmlspecialchars($c['surname']) ?></td>
+                                    <td><?php echo htmlspecialchars($c['email']) ?></td>
+                                    <td><?php echo $c['gender'] ?></td>
+                                    <td><?php echo htmlspecialchars($c['address']) ?></td>
+                                    <td><?php echo $c['codpostal'] ?></td>
+                                    <td><?php echo htmlspecialchars($c['poblacion']) ?></td>
+                                    <td><?php echo htmlspecialchars($c['provincia']) ?></td>
                                     <td>
-                                        <a href="edit_cli_mysqli.php?edit=<?= $c['id']; ?>"
+                                        <a href="edit_cli_mysqli.php?edit=<?php echo $c['id']; ?>"
                                             class="btn btn-sm btn-warning">✏️</a>
                                         <button type="button" class="btn btn-sm btn-danger"
-                                            onclick="eliminarCliente(<?=
-                                                                        $c['id']; ?>)">
+                                            onclick="eliminarCliente(<?php echo $c['id']; ?>)">
                                             🗑️
                                         </button>
                                     </td>
@@ -167,29 +166,31 @@ if (!isset($_SESSION["nombre"])) {
                         </tbody>
                     </table>
                     <nav aria-label="Paginación">
-                        <?php 
+                        <?php
                             $params = "";
                             //si hay parametros de busca se guardan para que luego no se pierdan al cambiar de página
-                            if(isset($_GET["searchParams"]))
-                                $params = "&searchParams=".$_GET["searchParams"];
+                            if (isset($_GET["searchParams"])) {
+                                $params = "&searchParams=" . $_GET["searchParams"];
+                            }
+
                         ?>
                         <ul class="pagination justify-content-center mb-3">
 
                             <!-- Anterior, resta 1 a la página actual si la pagina llega a 1 deshabilita el boton para impedir un error en la consulta-->
-                            <li class="page-item <?= ($pagina <= 1) ? 'disabled' : '' ?>">
-                                <a class="page-link" href="?page=<?= $pagina - 1 ?><?= $params ?>">Previous</a>
+                            <li class="page-item <?php echo ($pagina <= 1) ? 'disabled' : '' ?>">
+                                <a class="page-link" href="?page=<?php echo $pagina - 1 ?><?php echo $params ?>">Previous</a>
                             </li>
 
                             <!-- Números -->
                             <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-                                <li class="page-item <?= ($i == $pagina) ? 'active' : '' ?>">
-                                    <a class="page-link" href="?page=<?= $i ?><?= $params ?>"><?= $i ?></a>
+                                <li class="page-item <?php echo ($i == $pagina) ? 'active' : '' ?>">
+                                    <a class="page-link" href="?page=<?php echo $i ?><?php echo $params ?>"><?php echo $i ?></a>
                                 </li>
                             <?php endfor; ?>
 
                             <!-- Siguiente -->
-                            <li class="page-item <?= ($pagina >= $totalPaginas) ? 'disabled' : '' ?>"> 
-                                <a class="page-link" href="?page=<?= $pagina + 1 ?><?= $params ?>">Next</a>
+                            <li class="page-item <?php echo ($pagina >= $totalPaginas) ? 'disabled' : '' ?>">
+                                <a class="page-link" href="?page=<?php echo $pagina + 1 ?><?php echo $params ?>">Next</a>
                             </li>
 
                         </ul>

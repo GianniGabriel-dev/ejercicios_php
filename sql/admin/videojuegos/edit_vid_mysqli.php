@@ -13,135 +13,160 @@
 
 <body>
     <?php
-    include "../db/db.inc";
+        include "../db/db.inc";
 
-    if(isset($_POST["accion"]) && $_POST["accion"]== "editar"){
-        if(isset($_POST["nombre"]) &&  !empty($_POST["nombre"])){
-            $nombre=$_POST[ "nombre"];
-            $apellidos=$_POST[ "apellidos"];
-            $email=$_POST[ "email"];
-            
-            $genero=$_POST[ "genero"];
-            $direccion=$_POST[ "direccion"];
-            $cod_postal=$_POST[ "cod_postal"];
-            $poblacion=$_POST[ "poblacion"];
-            $provincia=$_POST[ "provincia"];
-            $id= $_POST["id"];
+        // Guardar cambios de videojuego
+        if (isset($_POST["accion"]) && $_POST["accion"] == "editar") {
+            if (isset($_POST["name"]) && ! empty($_POST["name"])) {
 
-            $sql = "UPDATE clients SET name='$nombre', surname='$apellidos', gender='$genero', address='$direccion', 
-            codpostal='$cod_postal', poblacion='$poblacion', provincia='$provincia' WHERE id=$id";
-            $res = mysqli_query($conn, $sql);
-            if($res){
-                header("location:gestion_clientes.php?cli=3"); //ok
-            }else{
-                header("location:gestion_clientes.php?cli=4"); //error
-            }
-        }
-    }
+                $id          = $_POST["id"];
+                $name        = $_POST["name"];
+                $developer   = $_POST["developer"];
+                $platforms   = $_POST["platforms"];
+                $genres      = $_POST["genres"];
+                $released_at = $_POST["released_at"];
+                $price       = $_POST["price"];
+                $stock       = $_POST["stock"];
+                $discount    = $_POST["discount"];
 
+                // Función para subir imagen
+                function uploadPhoto()
+                {
+                    $destino     = "../images/";
+                    $nombre_temp = $_FILES["image"]["tmp_name"];
+                    $nombre      = uniqid() . $_FILES["image"]["name"];
+                    $ruta_final  = $destino . $nombre;
 
-?>
+                    $fileName          = basename($nombre);
+                    $miExtension       = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                    $allowedExtensions = ["jpg", "jpeg", "png", "gif"];
 
-    <main class="container mt-5">
+                    if (in_array($miExtension, $allowedExtensions)) {
+                        if (move_uploaded_file($nombre_temp, $ruta_final)) {
+                    return $ruta_final;
+                        }
+                    }
+                    return false;
+                }
 
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h2>Registro de cliente con MySQLite</h2>
-            </div>
-            <div class="card-body">
-                <?php 
-            if(isset($_GET["edit"])){
-                $id = intval($_GET["edit"]);
-                $sql= "SELECT * FROM clients WHERE id=$id";
+                // Si se subió nueva imagen
+                if (isset($_FILES["image"]) && ! empty($_FILES["image"]["name"])) {
+                    $imagen = uploadPhoto();
+                    if (! $imagen) {
+                        header("Location:gestion_videojuegos.php?cli=4");
+                        exit;
+                    }
+                    $sql = "UPDATE games SET imageUrl='$imagen', name='$name', developer='$developer', platforms='$platforms', genres='$genres', released_at='$released_at', price='$price', stock='$stock', discount='$discount' WHERE id=$id";
+                } else {
+                    // Sin cambiar imagen
+                    $sql = "UPDATE games SET name='$name', developer='$developer', platforms='$platforms', genres='$genres', released_at='$released_at', price='$price', stock='$stock', discount='$discount' WHERE id=$id";
+                }
+
                 $res = mysqli_query($conn, $sql);
-            if(mysqli_num_rows($res)> 0){
-                $fila = mysqli_fetch_assoc($res);
-                $campos=["nombre" => $fila["name"], "apellido"=> $fila["surname"],
-                          "email" => $fila["email"], 
-                          "genero" => $fila["gender"], "direccion"=> $fila["address"],
-                          "cod_postal" => $fila["codpostal"], "poblacion"=> $fila["poblacion"],
-                          "provincia" => $fila["provincia"]
-                ];
-            };
-            if(!isset($_GET["edit"])){
-                header("location:gestion_clientes.php");
-                die();
+                if ($res) {
+                    header("location:gestion_videojuegos.php?cli=3"); //ok
+                } else {
+                    header("location:gestion_videojuegos.php?cli=4"); //error
+                }
             }
         }
-        ?>
-                <form method="post">
-                    <input type="hidden" name="id" value="<?= $id ?>">
+
+        // Obtener datos del videojuego a editar
+        if (isset($_GET["edit"])) {
+            $id  = intval($_GET["edit"]);
+            $sql = "SELECT * FROM games WHERE id=$id";
+            $res = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($res) > 0) {
+                $game = mysqli_fetch_assoc($res);
+            } else {
+                header("location:gestion_videojuegos.php");
+                exit;
+            }
+        } else {
+            header("location:gestion_videojuegos.php");
+            exit;
+        }
+    ?>
+
+    <main class="container min-vh-100 d-flex justify-content-center align-items-center">
+        <div class="card shadow-lg col-12 col-md-10 col-lg-8">
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0">🎮 Editar Videojuego</h3>
+            </div>
+
+            <div class="card-body px-4 py-4">
+                <form method="post" enctype="multipart/form-data">
+
+                    <input type="hidden" name="id" value="<?php echo $game['id'] ?>">
                     <input type="hidden" name="accion" value="editar">
-                    <div class="row">
-                        <div class="mb-3 col-6">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" value="<?= $campos["nombre"]  ?>" name="nombre" class="form-control"
-                                id="nombre" required>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="apellidos" class="form-label">Apellidos</label>
-                            <input type="text" value="<?= $campos["apellido"]  ?>" name="apellidos" class="form-control"
-                                id="apellidos" required>
-                        </div>
+
+                    <!-- Imagen -->
+                    <div class="mb-3">
+                        <label for="image" class="form-label fw-semibold">Imagen del videojuego</label>
+                        <input type="file" name="image" id="image" class="form-control form-control-lg"
+                            accept="image/*">
+                        <small class="text-muted">Dejar vacío para mantener la imagen actual</small>
                     </div>
-                    <div>
-                    </div>
-                    <div class="row">
-                        <div class="mb-3 col-6">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" value="<?= $campos["email"]  ?>" name="email" class="form-control"
-                                id="email" required>
+
+                    <!-- Nombre y Desarrolladora -->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label fw-semibold">Nombre</label>
+                            <input type="text" name="name" id="name" class="form-control form-control-lg"
+                                value="<?php echo $game['name'] ?>" required>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label for="genero" class="form-label">Género</label>
-                            <select class="form-select" name="genero" required>
-                                <?php
-                            $genero= $campos["genero"];
-                            if($genero=="f"){
-                                print'
-                                    <option >Seleccione una opcion</option>
-                                    <option selected  value="f">Femenino</option>
-                                    <option  value="m">Masculino</option>
-                                ';
-                            }else{
-                            print'
-                                    <option >Seleccione una opcion</option>
-                                    <option value="f">Femenino</option>
-                                    <option selected  value="m">Masculino</option>
-                                ';
-                            }
-                        ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="mb-3">
-                            <label for="direccion" class="form-label">Direccion</label>
-                            <input type="text" value="<?= $campos["direccion"] ?>" name="direccion" class="form-control"
-                                id="direccion" required>
+                        <div class="col-md-6">
+                            <label for="developer" class="form-label fw-semibold">Desarrolladora</label>
+                            <input type="text" name="developer" id="developer" class="form-control form-control-lg"
+                                value="<?php echo $game['developer'] ?>" required>
                         </div>
                     </div>
 
-                    <div class="row justify-content-around">
-                        <div class="mb-3 col-3">
-                            <label for="cod_postal" class="form-label">Código Postal</label>
-                            <input type="text" value="<?=$campos["cod_postal"]  ?>" name="cod_postal"
-                                class="form-control" id="cod_postal" required>
+                    <!-- Plataforma y Géneros -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <label for="platforms" class="form-label fw-semibold">Plataformas</label>
+                            <input type="text" name="platforms" id="platforms" class="form-control form-control-lg"
+                                value="<?php echo $game['platforms'] ?>" required>
                         </div>
-                        <div class="mb-3 col-3">
-                            <label for="poblacion" class="form-label">Población</label>
-                            <input type="text" value="<?= $campos["poblacion"] ?>" name="poblacion" class="form-control"
-                                id="poblacion" required>
-                        </div>
-                        <div class="mb-3 col-3">
-                            <label for="provincia" class="form-label">Provincia</label>
-                            <input type="text" value="<?=$campos["provincia"]  ?>" name="provincia" class="form-control"
-                                id="provincia" required>
+                        <div class="col-md-6">
+                            <label for="genres" class="form-label fw-semibold">Géneros</label>
+                            <input type="text" name="genres" id="genres" class="form-control form-control-lg"
+                                value="<?php echo $game['genres'] ?>" required>
                         </div>
                     </div>
-                    <div class="row justify-content-center mx-1">
-                        <button type="submit" class="btn btn-success col-12">Enviar</button>
+
+                    <!-- Fecha de lanzamiento -->
+                    <div class="mt-3">
+                        <label for="released_at" class="form-label fw-semibold">Fecha de lanzamiento</label>
+                        <input type="date" name="released_at" id="released_at" class="form-control form-control-lg"
+                            value="<?php echo $game['released_at'] ?>" required>
                     </div>
+
+                    <!-- Precio, Stock y Descuento -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-4">
+                            <label for="price" class="form-label fw-semibold">Precio (€)</label>
+                            <input type="number" name="price" id="price" class="form-control form-control-lg"
+                                step="0.01" min="0" value="<?php echo $game['price'] ?>" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="stock" class="form-label fw-semibold">Stock</label>
+                            <input type="number" name="stock" id="stock" class="form-control form-control-lg" min="0"
+                                value="<?php echo $game['stock'] ?>" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="discount" class="form-label fw-semibold">Descuento (%)</label>
+                            <input type="number" name="discount" id="discount" class="form-control form-control-lg"
+                                min="0" max="100" value="<?php echo $game['discount'] ?>">
+                        </div>
+                    </div>
+
+                    <!-- Botón -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">✅ Guardar cambios</button>
+                    </div>
+
                 </form>
             </div>
         </div>

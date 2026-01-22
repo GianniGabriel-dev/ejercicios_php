@@ -13,135 +13,111 @@
 
 <body>
     <?php
-    include "../db/db.inc";
+        include "../db/db.inc";
 
-    if(isset($_POST["accion"]) && $_POST["accion"]== "editar"){
-        if(isset($_POST["nombre"]) &&  !empty($_POST["nombre"])){
-            $nombre=$_POST[ "nombre"];
-            $apellidos=$_POST[ "apellidos"];
-            $email=$_POST[ "email"];
-            
-            $genero=$_POST[ "genero"];
-            $direccion=$_POST[ "direccion"];
-            $cod_postal=$_POST[ "cod_postal"];
-            $poblacion=$_POST[ "poblacion"];
-            $provincia=$_POST[ "provincia"];
-            $id= $_POST["id"];
+        if (isset($_POST["accion"]) && $_POST["accion"] == "editar") {
+            if (isset($_POST["nombre"]) && ! empty($_POST["nombre"])) {
+                $nombre    = $_POST["nombre"];
+                $apellidos = $_POST["apellidos"];
+                $email     = $_POST["email"];
 
-            $sql = "UPDATE clients SET name='$nombre', surname='$apellidos', gender='$genero', address='$direccion', 
+                $genero     = $_POST["genero"];
+                $direccion  = $_POST["direccion"];
+                $cod_postal = $_POST["cod_postal"];
+                $poblacion  = $_POST["poblacion"];
+                $provincia  = $_POST["provincia"];
+                $id         = $_POST["id"];
+
+                $sql = "UPDATE clients SET name='$nombre', surname='$apellidos', gender='$genero', address='$direccion',
             codpostal='$cod_postal', poblacion='$poblacion', provincia='$provincia' WHERE id=$id";
-            $res = mysqli_query($conn, $sql);
-            if($res){
-                header("location:gestion_clientes.php?cli=3"); //ok
-            }else{
-                header("location:gestion_clientes.php?cli=4"); //error
+                $res = mysqli_query($conn, $sql);
+                if ($res) {
+                    header("location:gestion_clientes.php?cli=3"); //ok
+                } else {
+                    header("location:gestion_clientes.php?cli=4"); //error
+                }
             }
         }
-    }
-
-
-?>
-
-    <main class="container mt-5">
-
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h2>Registro de cliente con MySQLite</h2>
-            </div>
-            <div class="card-body">
-                <?php 
-            if(isset($_GET["edit"])){
-                $id = intval($_GET["edit"]);
-                $sql= "SELECT * FROM clients WHERE id=$id";
-                $res = mysqli_query($conn, $sql);
-            if(mysqli_num_rows($res)> 0){
-                $fila = mysqli_fetch_assoc($res);
-                $campos=["nombre" => $fila["name"], "apellido"=> $fila["surname"],
-                          "email" => $fila["email"], 
-                          "genero" => $fila["gender"], "direccion"=> $fila["address"],
-                          "cod_postal" => $fila["codpostal"], "poblacion"=> $fila["poblacion"],
-                          "provincia" => $fila["provincia"]
-                ];
-            };
-            if(!isset($_GET["edit"])){
+        if (isset($_GET["edit"])) {
+            $id  = intval($_GET["edit"]);
+            $sql = "SELECT * FROM clients WHERE id=$id";
+            $res = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($res) > 0) {
+                $clientes = mysqli_fetch_assoc($res);
+            }
+            if (! isset($_GET["edit"])) {
                 header("location:gestion_clientes.php");
                 die();
             }
         }
-        ?>
+    ?>
+
+    <main class="container min-vh-100 d-flex justify-content-center align-items-center">
+
+        <div class="card shadow-lg col-12 col-md-10 col-lg-8">
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0">👤 Editar Cliente</h3>
+            </div>
+            <div class="card-body">
                 <form method="post">
-                    <input type="hidden" name="id" value="<?= $id ?>">
+                    <input type="hidden" name="id" value="<?php echo $id ?>">
                     <input type="hidden" name="accion" value="editar">
-                    <div class="row">
-                        <div class="mb-3 col-6">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" value="<?= $campos["nombre"]  ?>" name="nombre" class="form-control"
-                                id="nombre" required>
+
+                    <!-- Nombre y Apellidos -->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="nombre" class="form-label fw-semibold">Nombre</label>
+                            <input type="text" name="nombre" id="nombre" class="form-control form-control-lg" value="<?php echo $clientes["name"] ?>" required>
                         </div>
-                        <div class="mb-3 col-6">
-                            <label for="apellidos" class="form-label">Apellidos</label>
-                            <input type="text" value="<?= $campos["apellido"]  ?>" name="apellidos" class="form-control"
-                                id="apellidos" required>
-                        </div>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="row">
-                        <div class="mb-3 col-6">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" value="<?= $campos["email"]  ?>" name="email" class="form-control"
-                                id="email" required>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="genero" class="form-label">Género</label>
-                            <select class="form-select" name="genero" required>
-                                <?php
-                            $genero= $campos["genero"];
-                            if($genero=="f"){
-                                print'
-                                    <option >Seleccione una opcion</option>
-                                    <option selected  value="f">Femenino</option>
-                                    <option  value="m">Masculino</option>
-                                ';
-                            }else{
-                            print'
-                                    <option >Seleccione una opcion</option>
-                                    <option value="f">Femenino</option>
-                                    <option selected  value="m">Masculino</option>
-                                ';
-                            }
-                        ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="mb-3">
-                            <label for="direccion" class="form-label">Direccion</label>
-                            <input type="text" value="<?= $campos["direccion"] ?>" name="direccion" class="form-control"
-                                id="direccion" required>
+                        <div class="col-md-6">
+                            <label for="apellidos" class="form-label fw-semibold">Apellidos</label>
+                            <input type="text" name="apellidos" id="apellidos" class="form-control form-control-lg" value="<?php echo $clientes["surname"] ?>" required>
                         </div>
                     </div>
 
-                    <div class="row justify-content-around">
-                        <div class="mb-3 col-3">
-                            <label for="cod_postal" class="form-label">Código Postal</label>
-                            <input type="text" value="<?=$campos["cod_postal"]  ?>" name="cod_postal"
-                                class="form-control" id="cod_postal" required>
+                    <!-- Email y Género -->
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-6">
+                            <label for="email" class="form-label fw-semibold">Email</label>
+                            <input type="email" name="email" id="email" class="form-control form-control-lg" value="<?php echo $clientes["email"] ?>" required>
                         </div>
-                        <div class="mb-3 col-3">
-                            <label for="poblacion" class="form-label">Población</label>
-                            <input type="text" value="<?= $campos["poblacion"] ?>" name="poblacion" class="form-control"
-                                id="poblacion" required>
-                        </div>
-                        <div class="mb-3 col-3">
-                            <label for="provincia" class="form-label">Provincia</label>
-                            <input type="text" value="<?=$campos["provincia"]  ?>" name="provincia" class="form-control"
-                                id="provincia" required>
+                        <div class="col-md-6">
+                            <label for="genero" class="form-label fw-semibold">Género</label>
+                            <select name="genero" id="genero" class="form-select form-select-lg" required>
+                                <option>Seleccione una opción</option>
+                                <option value="f" <?php echo($clientes["gender"] == "f") ? "selected" : "" ?>>Femenino</option>
+                                <option value="m" <?php echo($clientes["gender"] == "m") ? "selected" : "" ?>>Masculino</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="row justify-content-center mx-1">
-                        <button type="submit" class="btn btn-success col-12">Enviar</button>
+
+                    <!-- Dirección -->
+                    <div class="mt-3">
+                        <label for="direccion" class="form-label fw-semibold">Dirección</label>
+                        <input type="text" name="direccion" id="direccion" class="form-control form-control-lg" value="<?php echo $clientes["address"] ?>" required>
                     </div>
+
+                    <!-- Código Postal, Población y Provincia -->
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-4">
+                            <label for="cod_postal" class="form-label fw-semibold">Código Postal</label>
+                            <input type="text" name="cod_postal" id="cod_postal" class="form-control form-control-lg" value="<?php echo $clientes["codpostal"] ?>" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="poblacion" class="form-label fw-semibold">Población</label>
+                            <input type="text" name="poblacion" id="poblacion" class="form-control form-control-lg" value="<?php echo $clientes["poblacion"] ?>" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="provincia" class="form-label fw-semibold">Provincia</label>
+                            <input type="text" name="provincia" id="provincia" class="form-control form-control-lg" value="<?php echo $clientes["provincia"] ?>" required>
+                        </div>
+                    </div>
+
+                    <!-- Botón -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">✅ Guardar cambios</button>
+                    </div>
+
                 </form>
             </div>
         </div>

@@ -13,56 +13,57 @@
 
 <body>
     <?php
-    include "../db/db.inc";
-    if(isset($_POST["name"]) &&  !empty($_POST["name"])){
-        $name=$_POST[ "name"];
-        $developer=$_POST[ "developer"];
-        $platforms=$_POST[ "platforms"];
-        $genres= $_POST["genres"];
-        $released_at=$_POST[ "released_at"];
-        $price=$_POST[ "price"];
-        $stock=$_POST[ "stock"];
-        $discount=$_POST[ "discount"];
-        function uploadPhoto(){
-            // Ruta donde quieres guardar el archivo
-            $destino = "../images/";
-            $nombre_temp = $_FILES["image"]["tmp_name"];
-            $nombre= uniqid(). $_FILES["image"]["name"];
-            $ruta_final = $destino . $nombre;
+        include "../db/db.inc";
+        if (isset($_POST["name"]) && ! empty($_POST["name"])) {
+            $name        = $_POST["name"];
+            $developer   = $_POST["developer"];
+            $platforms   = $_POST["platforms"];
+            $genres      = $_POST["genres"];
+            $released_at = $_POST["released_at"];
+            $price       = $_POST["price"];
+            $stock       = $_POST["stock"];
+            $discount    = $_POST["discount"];
+            function uploadPhoto()
+            {
+                // Ruta donde quieres guardar el archivo
+                $destino     = "../images/";
+                $nombre_temp = $_FILES["image"]["tmp_name"];
+                $nombre      = uniqid() . $_FILES["image"]["name"];
+                $ruta_final  = $destino . $nombre;
 
-            $fileName = basename($nombre);
-            $miExtension= strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                $fileName    = basename($nombre);
+                $miExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-            $allowedExtensions=["jpg", "jpeg", "png", "gif"];
-            //se comprueba la extensión del archivo
-            if(in_array($miExtension,$allowedExtensions)){
-                // Mueve el archivo temporal a la carpeta de destino
-                if (move_uploaded_file($nombre_temp, $ruta_final)) {
-                    return $ruta_final;
+                $allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+                //se comprueba la extensión del archivo
+                if (in_array($miExtension, $allowedExtensions)) {
+                    // Mueve el archivo temporal a la carpeta de destino
+                    if (move_uploaded_file($nombre_temp, $ruta_final)) {
+                        return $ruta_final;
+                    }
+                    return false;
                 }
-                return false;
             }
-        }
-        //validación de campos del formulario, si no cumple algún aspecto, redirige al formulario mostrando un error en los parámetros de la url
-        if(isset($_FILES["image"])&& !empty($_FILES["image"])){
-            $imagen= uploadPhoto();
-            if(!$imagen){
+            //validación de campos del formulario, si no cumple algún aspecto, redirige al formulario mostrando un error en los parámetros de la url
+            if (isset($_FILES["image"]) && ! empty($_FILES["image"])) {
+                $imagen = uploadPhoto();
+                if (! $imagen) {
+                    header("Location:form_imagen.php?error=1");
+                }
+            } else {
                 header("Location:form_imagen.php?error=1");
             }
-        }else{
-            header("Location:form_imagen.php?error=1");
-        } 
 
-        $sql = "INSERT INTO games (imageUrl, name, developer, platforms, genres, released_at, price, stock, discount)
+            $sql = "INSERT INTO games (imageUrl, name, developer, platforms, genres, released_at, price, stock, discount)
         VALUES ('$imagen','$name', '$developer', '$platforms', '$genres', '$released_at', '$price', '$stock', '$discount')";
-        $res = mysqli_query($conn, $sql);
-        if($res){
-            header("location:gestion_videojuegos.php?cli=2"); //opercion exitosa
-        }else{
-            header("location:gestion_videojuegos.php?cli=4");//opercaion fallida
+            $res = mysqli_query($conn, $sql);
+            if ($res) {
+                header("location:gestion_videojuegos.php?cli=2"); //opercion exitosa
+            } else {
+                header("location:gestion_videojuegos.php?cli=4"); //opercaion fallida
+            }
         }
-    }
-?>
+    ?>
 
 <main class="container min-vh-100 d-flex justify-content-center align-items-center">
 

@@ -11,12 +11,12 @@
 </head>
 <?php
     session_start();
-    if (!isset($_SESSION["nombre"])) {
-        header("location: ../index.php");
-        die();
+    if (! isset($_SESSION["nombre"])) {
+    header("location: ../index.php");
+    die();
     }
-    $nombre = $_SESSION["nombre"];
-    $rol = $_SESSION["rol"];
+    $nombre                = $_SESSION["nombre"];
+    $rol                   = $_SESSION["rol"];
     $rol == 1 ? $nombreRol = "admin" : $nombreRol = "normal user";
 ?>
 <body>
@@ -25,8 +25,8 @@
         <div class="d-flex p-2 align-items-center">
             <img src="images/admin.jpg" alt="image of user" width="60" height="60" class="rounded-circle me-2">
             <div class="card-body d-flex flex-column gap-0">
-                <p class="m-0 h6 font-weight-bold"><?= $nombre ?></p>
-                <p class="m-0"><?= $nombreRol ?></p>
+                <p class="m-0 h6 font-weight-bold"><?php echo $nombre ?></p>
+                <p class="m-0"><?php echo $nombreRol ?></p>
             </div>
         </div>
         <ul class="nav nav-pills flex-column mb-auto">
@@ -63,7 +63,7 @@
                 </div>
             </a>
 
-            <a class="col d-flex justify-content-center text-decoration-none">
+            <a class="col d-flex justify-content-center text-decoration-none" href="videojuegos/gestion_videojuegos.php">
                 <div class="card card-hover text-primary-emphasis align-items-center justify-content-center text-center"
                     style="width: 250px; height: 220px;">
                     <svg width="80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">

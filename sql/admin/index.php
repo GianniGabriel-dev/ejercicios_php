@@ -1,5 +1,5 @@
 <?php
-include("./db/db.inc");
+    include "./db/db.inc";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,28 +13,28 @@ include("./db/db.inc");
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
 <?php
-if (
-    isset($_POST["email"]) && !empty($_POST["email"]) &&
+    if (
+    isset($_POST["email"]) && ! empty($_POST["email"]) &&
     filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)
-) {
-    if (isset($_POST["password"]) && !empty($_POST["password"])) {
-        $email = htmlspecialchars(trim($_POST["email"]));
+    ) {
+    if (isset($_POST["password"]) && ! empty($_POST["password"])) {
+        $email    = htmlspecialchars(trim($_POST["email"]));
         $password = htmlspecialchars(sha1($_POST["password"]));
-        $check = $conn->prepare("SELECT email, email, role FROM users
+        $check    = $conn->prepare("SELECT email, email, role FROM users
     WHERE email = ? AND password =?");
         //Utilizamos bind_param para evitar inyecciones de código sql
         //Asocio las variables PHP a los placeholders (?) de la consulta preparada, indicando el tipo de dato.
         //Esta cadena indica el tipo de dato de cada parámetro, enorden:s → string (cadena) s → string
         $check->bind_param("ss", $email, $password);
-        $check->execute(); //Ejecutamos la consulta
-        $check->store_result(); //Guardamos el resultado del SELECT
+        $check->execute();          //Ejecutamos la consulta
+        $check->store_result();     //Guardamos el resultado del SELECT
         if ($check->num_rows > 0) { //Si las credenciales son válidas -> hay una fila coincidente en la BD
             session_start();
             // Vinculo las variables donde se guardarán los resultados de la consulta
             $check->bind_result($nombre, $emailDB, $rol);
             $check->fetch(); //Extraigo la fila de resultados y lleno esas variables.
             $_SESSION["nombre"] = $nombre;
-            $_SESSION["rol"] = $rol;
+            $_SESSION["rol"]    = $rol;
 
             $_SESSION["email"] = $emailDB;
             header("location:./panelControl.php");
@@ -45,10 +45,12 @@ if (
     } else { //Si password mal
         echo '<div class="mt-4 alert alert-warning">⚠️ Error en el campo Password.</div>';
     }
-} else { //Si no existe el email
-    if (isset($_POST["email"]))
+    } else { //Si no existe el email
+    if (isset($_POST["email"])) {
         echo '<div class="mt-4 alert alert-warning">⚠️ El email no es válido.</div>';
-}
+    }
+
+    }
 ?>
 
 <body>

@@ -1,54 +1,54 @@
 <?php
-session_start();
-if (!isset($_SESSION["nombre"])) {
+    session_start();
+    if (! isset($_SESSION["nombre"])) {
     header("location: ../index.php");
     die();
-}
+    }
 ?>
 
 <?php
-    include("../db/db_pdo.inc"); // Incluimos la conexión a la BD
-    // Obtener solo los 10 primeros clientes
+    include "../db/db_pdo.inc"; // Incluimos la conexión a la BD
+                            // Obtener solo los 10 primeros clientes
     $porPagina = 10;
-    $pagina = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $pagina    = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     //el offset indica desde qué registro empezar a mostrar
     $offset = ($pagina - 1) * $porPagina;
     //parámetros de búsqueda introducidos por el usuario, si no hay nada se pasa vacío
-    $search= isset($_GET["searchParams"]) ? $_GET["searchParams"] : "";
+    $search = isset($_GET["searchParams"]) ? $_GET["searchParams"] : "";
 
-$stmt = $pdo->prepare(
+    $stmt = $pdo->prepare(
     "SELECT * FROM games
      WHERE name LIKE :search
      ORDER BY id DESC
      LIMIT :limit OFFSET :offset"
-);
+    );
 
-$stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
-$stmt->bindValue(':limit', $porPagina, PDO::PARAM_INT);
-$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+    $stmt->bindValue(':limit', $porPagina, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
-$stmt->execute();
-$games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute();
+    $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     //sacar el total de clientes para calcular cuantas paginas mostrar
     $totalGames = $pdo->prepare(
-        "SELECT COUNT(*) FROM games
+    "SELECT COUNT(*) FROM games
         WHERE name LIKE :search"
     );
     $totalGames->bindValue(':search', "%$search%", PDO::PARAM_STR);
     $totalGames->execute();
     $totalGames = $totalGames->fetchColumn();
-    
+
     $totalPaginas = ceil($totalGames / $porPagina);
     //se guarda nombre y rol del usuario para mostrarlo en la sidebar
-    $nombre = $_SESSION["nombre"];
-    $rol = $_SESSION["rol"];
+    $nombre                = $_SESSION["nombre"];
+    $rol                   = $_SESSION["rol"];
     $rol == 1 ? $nombreRol = "admin" : $nombreRol = "normal user";
 
     if (isset($_GET["eliminar"])) {
-        $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
-        $pdo->prepare("DELETE FROM games WHERE id=?")->execute([$id]);
-        header("location: gestion_videojuegos.php");
+    $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
+    $pdo->prepare("DELETE FROM games WHERE id=?")->execute([$id]);
+    header("location: gestion_videojuegos.php");
     }
 ?>
 
@@ -71,8 +71,8 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="d-flex p-2 align-items-center">
                 <img src="../images/admin.jpg" alt="image of user" width="60" height="60" class="rounded-circle me-2">
                 <div class="card-body d-flex flex-column gap-0">
-                    <p class="m-0 h6 font-weight-bold"><?= $nombre ?></p>
-                    <p class="m-0"><?= $nombreRol ?></p>
+                    <p class="m-0 h6 font-weight-bold"><?php echo $nombre ?></p>
+                    <p class="m-0"><?php echo $nombreRol ?></p>
                 </div>
             </div>
             <a href="../panelControl.php" class="d-flex align-items-center mb-3 fs-5 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -98,17 +98,17 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card-header bg-secondary text-white">📋 Lista de inventario</div>
                 <div class="card-body flex-column">
                     <?php
-                    if (isset($_GET["cli"]) && $_GET["cli"]) {
-                        if ($_GET["cli"] == 1) {
-                            echo '<div class="alert alert-warning">⚠️ El email ya existe en la base de datos.</div>';
-                        } elseif ($_GET["cli"] == 2) {
-                            echo '<div class="alert alert-success">✅ Videojuego insertado correctamente.</div>';
-                        } elseif ($_GET["cli"] == 3) {
-                            echo '<div class="alert alert-success">✅ Videojuego actualizado correctamente.</div>';
-                        } elseif ($_GET["cli"] == 4) {
-                            echo '<div class="alert alert-danger">❌ Eror al ingresar datos, vielva a intentarlo.</div>';
+                        if (isset($_GET["cli"]) && $_GET["cli"]) {
+                            if ($_GET["cli"] == 1) {
+                                echo '<div class="alert alert-warning">⚠️ El email ya existe en la base de datos.</div>';
+                            } elseif ($_GET["cli"] == 2) {
+                                echo '<div class="alert alert-success">✅ Videojuego insertado correctamente.</div>';
+                            } elseif ($_GET["cli"] == 3) {
+                                echo '<div class="alert alert-success">✅ Videojuego actualizado correctamente.</div>';
+                            } elseif ($_GET["cli"] == 4) {
+                                echo '<div class="alert alert-danger">❌ Eror al ingresar datos, vuelva a intentarlo.</div>';
+                            }
                         }
-                    }
                     ?>
                         <div class="d-flex justify-content-between align-items-center mb-3 me-2 gap-3">
                                 <form method="GET" action="" class="search-container col-10 d-flex align-items-center">
@@ -139,28 +139,27 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tbody>
                             <?php foreach ($games as $g): ?>
                                 <tr>
-                                    <td><?= $g['id'] ?></td>
+                                    <td><?php echo $g['id'] ?></td>
                                     <td>
-                                        <img 
-                                            width="70" 
-                                            height="90" 
-                                            src="<?= htmlspecialchars($g['imageUrl']) ?>" 
-                                            alt="image of game <?= htmlspecialchars($g['name']) ?>">
+                                        <img
+                                            width="70"
+                                            height="90"
+                                            src="<?php echo htmlspecialchars($g['imageUrl']) ?>"
+                                            alt="image of game <?php echo htmlspecialchars($g['name']) ?>">
                                     </td>
-                                    <td><?= htmlspecialchars($g['name']) ?></td>
-                                    <td><?= htmlspecialchars($g['developer']) ?></td>
-                                    <td><?= $g['platforms'] ?></td>
-                                    <td><?= htmlspecialchars($g['genres']) ?></td>
-                                    <td><?= $g['released_at'] ?></td>
-                                    <td><?= htmlspecialchars($g['price']) ?></td>
-                                    <td><?= htmlspecialchars($g['stock']) ?></td>
-                                    <td><?= htmlspecialchars($g['discount']) ?></td>
+                                    <td><?php echo htmlspecialchars($g['name']) ?></td>
+                                    <td><?php echo htmlspecialchars($g['developer']) ?></td>
+                                    <td><?php echo $g['platforms'] ?></td>
+                                    <td><?php echo htmlspecialchars($g['genres']) ?></td>
+                                    <td><?php echo $g['released_at'] ?></td>
+                                    <td><?php echo htmlspecialchars($g['price']) ?></td>
+                                    <td><?php echo htmlspecialchars($g['stock']) ?></td>
+                                    <td><?php echo htmlspecialchars($g['discount']) ?></td>
                                     <td>
-                                        <a href="edit_cli_mysqli.php?edit=<?= $g['id']; ?>"
+                                        <a href="edit_vid_mysqli.php?edit=<?php echo $g['id']; ?>"
                                             class="btn btn-sm btn-warning">✏️</a>
                                         <button type="button" class="btn btn-sm btn-danger"
-                                            onclick="eliminarCliente(<?=
-                                                                        $g['id']; ?>)">
+                                            onclick="eliminarCliente(<?php echo $g['id']; ?>)">
                                             🗑️
                                         </button>
                                     </td>
@@ -172,20 +171,20 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <ul class="pagination justify-content-center mb-3">
 
                             <!-- Anterior, resta 1 a la página actual si la pagina llega a 1 deshabilita el boton para impedir un error en la consulta-->
-                            <li class="page-item <?= ($pagina <= 1) ? 'disabled' : '' ?>">
-                                <a class="page-link" href="?page=<?= $pagina - 1 ?>">Previous</a>
+                            <li class="page-item <?php echo($pagina <= 1) ? 'disabled' : '' ?>">
+                                <a class="page-link" href="?page=<?php echo $pagina - 1 ?>">Previous</a>
                             </li>
 
                             <!-- Números -->
                             <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-                                <li class="page-item <?= ($i == $pagina) ? 'active' : '' ?>">
-                                    <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                                <li class="page-item <?php echo($i == $pagina) ? 'active' : '' ?>">
+                                    <a class="page-link" href="?page=<?php echo $i ?>"><?php echo $i ?></a>
                                 </li>
                             <?php endfor; ?>
 
                             <!-- Siguiente -->
-                            <li class="page-item <?= ($pagina >= $totalPaginas) ? 'disabled' : '' ?>">
-                                <a class="page-link" href="?page=<?= $pagina + 1 ?>">Next</a>
+                            <li class="page-item <?php echo($pagina >= $totalPaginas) ? 'disabled' : '' ?>">
+                                <a class="page-link" href="?page=<?php echo $pagina + 1 ?>">Next</a>
                             </li>
 
                         </ul>
