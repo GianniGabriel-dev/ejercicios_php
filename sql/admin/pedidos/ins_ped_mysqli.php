@@ -90,10 +90,12 @@
               </select>
             </div>
         </div>
-        <ul id="productList" class="list-unstyled">
+        <div class="d-grid mt-4  d-flex flex-column ">
+          <h2 class="p-0">Lista de productos:</h2>
+            <ul id="productList" class="list-unstyled">
 
-        </ul>
-        <div class="d-grid mt-4">
+            </ul>
+          <div class="noProducts text-center fs-4 mb-4 text-muted">No hay ningún producto, empieza a agregar</div>
           <button type="button" class="btn btn-success btn-lg " id="addProduct">
             ➕ Agregar producto
           </button>
@@ -112,6 +114,17 @@
 </main>
 <script>
 const productList = document.getElementById("productList");
+
+  function updateNoProductsMessage() {
+    let noProducts = document.querySelector(".noProducts");
+
+    if (productList.children.length === 0) {
+      noProducts.classList.remove("d-none");
+    } else {
+      noProducts.classList.add("d-none");
+    }
+  }
+  updateNoProductsMessage()
 
 function createProductRow() {
     // Crea un li para cada producto agregado
@@ -132,14 +145,23 @@ function createProductRow() {
           if ($res) {
               while ($row = mysqli_fetch_assoc($res)) {
                   // el valor es la id del usuario
-                  echo "{ id: " . $row['id'] . ", name: '" . addslashes($row['name']) . "'}";
+                  echo "{ id: " . $row['id'] . ", name: '" . addslashes($row['name']) . "'},";
               }
           }
        ?>
     ];
     console.log(products)
+    //opción default que aparece seleccionada y deshabilitada en el select
+    const disabledOption=document.createElement("option")
+    disabledOption.value=""
+    disabledOption.textContent="Selecciona un producto"
+    disabledOption.disabled=true
+    disabledOption.selected=true
+    select.appendChild(disabledOption)
 
     products.forEach(product => {
+
+        //opcion normal elegible
         const option = document.createElement("option");
         option.value = product.id;
         option.textContent = product.name;
@@ -152,22 +174,29 @@ function createProductRow() {
     quantity.name = "quantities[]"; // array de cantidades
     quantity.value = 1;
     quantity.min = 1;
-    quantity.className = "form-control w-25 me-2";
+    quantity.className = "form-control w-25 me-2 ms-2";
 
     // Botón para eliminar
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "btn btn-danger";
-    removeBtn.textContent = "Eliminar";
-    removeBtn.addEventListener("click", ()=> li.remove());
+    removeBtn.textContent = "🗑️";
+    removeBtn.addEventListener("click", ()=>{ 
+      li.remove() 
+      updateNoProductsMessage()
+    });
 
+    const multiplySymbol=document.createElement("span")
+    multiplySymbol.textContent="✖️"
     // Agrega todo al li
     li.appendChild(select);
+    li.appendChild(multiplySymbol)
     li.appendChild(quantity);
     li.appendChild(removeBtn);
 
     // Agrega el li a la lista
     productList.appendChild(li);
+    updateNoProductsMessage()
 }
 
 // Listener
