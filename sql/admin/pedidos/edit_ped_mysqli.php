@@ -60,7 +60,7 @@
                 if (isset($_FILES["image"]) && ! empty($_FILES["image"]["name"])) {
                     $imagen = uploadPhoto();
                     if (! $imagen) {
-                        header("Location:gestion_videojuegos.php?cli=4");
+                        header("Location:gestion_pedidos.php?cli=4");
                         exit;
                     }
                     $sql = "UPDATE games SET imageUrl='$imagen', name='$name', developer='$developer', platforms='$platforms', genres='$genres', released_at='$released_at', price='$price', stock='$stock', discount='$discount' WHERE id=$id";
@@ -71,9 +71,9 @@
 
                 $res = mysqli_query($conn, $sql);
                 if ($res) {
-                    header("location:gestion_videojuegos.php?cli=3"); //ok
+                    header("location:gestion_pedidos.php?cli=3"); //ok
                 } else {
-                    header("location:gestion_videojuegos.php?cli=4"); //error
+                    header("location:gestion_pedidos.php?cli=4"); //error
                 }
             }
         }
@@ -86,11 +86,11 @@
             if (mysqli_num_rows($res) > 0) {
                 $game = mysqli_fetch_assoc($res);
             } else {
-                header("location:gestion_videojuegos.php");
+                header("location:gestion_pedidos.php");
                 exit;
             }
         } else {
-            header("location:gestion_videojuegos.php");
+            header("location:gestion_pedidos.php");
             exit;
         }
     ?>

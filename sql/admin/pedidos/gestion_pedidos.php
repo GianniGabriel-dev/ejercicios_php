@@ -48,7 +48,7 @@
     if (isset($_GET["eliminar"])) {
     $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
     $pdo->prepare("DELETE FROM games WHERE id=?")->execute([$id]);
-    header("location: gestion_videojuegos.php");
+    header("location: gestion_pedidos.php");
     }
 ?>
 
@@ -58,7 +58,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Clientes</title>
+    <title>Gestión de Pedidos</title>
     <link rel="stylesheet" href="../css/panelControl.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min
 .css" rel="stylesheet">
@@ -84,29 +84,29 @@
                     <a href="../clientes/gestion_clientes.php" class="nav-link link-dark">Clientes</a>
                 </li>
                 <li>
-                    <a href="../videojuegos/gestion_videojuegos.php"  aria-current="page" class="nav-link active">Inventario</a>
+                    <a href="../videojuegos/gestion_videojuegos.php"  class="nav-link link-dark">Inventario</a>
                 </li>
                 <li>
-                    <a href="../pedidos/gestion_pedidos.php" class="nav-link link-dark">Pedidos</a>
+                    <a href="../pedidos/gestion_pedidos.php"  aria-current="page" class="nav-link active">Pedidos</a>
                 </li>
             </ul>
     </aside>
         <div class="container-fluid flex-grow-1 overflow-auto ">
-            <h2 class="text-center mb-4 mt-4">📋 Gestión de Inventario</h2>
+            <h2 class="text-center mb-4 mt-4">📦 Gestión de Pedidos</h2>
             <!-- Tabla de clientes -->
             <div class="card shadow  d-flex">
-                <div class="card-header bg-secondary text-white">📋 Lista de inventario</div>
+                <div class="card-header bg-secondary text-white">📦 Lista de Pedidos</div>
                 <div class="card-body flex-column">
                     <?php
                         if (isset($_GET["cli"]) && $_GET["cli"]) {
                             if ($_GET["cli"] == 1) {
                                 echo '<div class="alert alert-warning">⚠️ El email ya existe en la base de datos.</div>';
                             } elseif ($_GET["cli"] == 2) {
-                                echo '<div class="alert alert-success">✅ Videojuego insertado correctamente.</div>';
+                                echo '<div class="alert alert-success">✅ Pedido creado correctamente.</div>';
                             } elseif ($_GET["cli"] == 3) {
-                                echo '<div class="alert alert-success">✅ Videojuego actualizado correctamente.</div>';
+                                echo '<div class="alert alert-success">✅ Pedido actualizado correctamente.</div>';
                             } elseif ($_GET["cli"] == 4) {
-                                echo '<div class="alert alert-danger">❌ Eror al ingresar datos, vuelva a intentarlo.</div>';
+                                echo '<div class="alert alert-danger">❌ Eror al crear el pedido, vuelva a intentarlo.</div>';
                             }
                         }
                     ?>
@@ -115,8 +115,8 @@
                                     <input type="text"  name="searchParams" class="search-input" placeholder="Search...">
                                     <button type="submit" class="fas fa-search search-icon "></button>
                                 </form >
-                                <a href="ins_vid_mysqli.php" class="btn btn-success col-2">➕
-                                    Nuevo videojuego
+                                <a href="ins_ped_mysqli.php" class="btn btn-success col-2">➕
+                                    Nuevo Pedido
                                 </a>
                         </div>
                     </div>
@@ -124,16 +124,13 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>ID</th>
-                                <th>Imagen</th>
-                                <th>Nombre</th>
-                                <th>Desarrolladora</th>
-                                <th>Plataforma</th>
-                                <th>Géneros</th>
-                                <th>Fecha lanzamineto</th>
+                                <th>Cliente</th>
+                                <th>Fecha pedido</th>
+                                <th>Estado</th>
+                                <th>Metodo de pago</th>
+                                <th>Dirección pedido</th>
+                                <th>Total</th>
                                 <th>Precio</th>
-                                <th>Stock</th>
-                                <th>Descuento</th>
-                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -156,7 +153,7 @@
                                     <td><?php echo htmlspecialchars($g['stock']) ?></td>
                                     <td><?php echo htmlspecialchars($g['discount']) ?></td>
                                     <td>
-                                        <a href="edit_vid_mysqli.php?edit=<?php echo $g['id']; ?>"
+                                        <a href="edit_ped_mysqli.php?edit=<?php echo $g['id']; ?>"
                                             class="btn btn-sm btn-warning">✏️</a>
                                         <button type="button" class="btn btn-sm btn-danger"
                                             onclick="eliminarCliente(<?php echo $g['id']; ?>)">
@@ -218,7 +215,7 @@
         bootstrap.Modal(document.getElementById('confirmModal'));
         modal.show();
         document.getElementById('confirmDeleteBtn').onclick = () => {
-            window.location.href = 'gestion_videojuegos.php?eliminar=' + idGame
+            window.location.href = 'gestion_pedidos.php?eliminar=' + idGame
             modal.hide();
         };
     }

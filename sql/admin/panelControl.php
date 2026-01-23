@@ -46,7 +46,7 @@
                 <a href="./videojuegos/gestion_videojuegos.php" class="nav-link link-dark">Inventario</a>
             </li>
             <li>
-                <a href="#" class="nav-link link-dark">Pedidos</a>
+                <a href="./pedidos/gestion_pedidos.php" class="nav-link link-dark">Pedidos</a>
             </li>
         </ul>
     </aside>
@@ -73,7 +73,7 @@
                 </div>
             </a>
 
-            <a class="col d-flex justify-content-center text-decoration-none">
+            <a class="col d-flex justify-content-center text-decoration-none" href="pedidos/gestion_pedidos.php">
                 <div class="card card-hover text-primary-emphasis align-items-center justify-content-center text-center"
                     style="width: 250px; height: 220px;">
                     <svg width="80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">

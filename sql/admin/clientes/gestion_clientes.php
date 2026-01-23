@@ -92,7 +92,7 @@
                     <a href="../videojuegos/gestion_videojuegos.php" class="nav-link link-dark">Inventario</a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-dark">Pedidos</a>
+                    <a href="../pedidos/gestion_pedidos.php" class="nav-link link-dark">Pedidos</a>
                 </li>
             </ul>
         </aside>
