@@ -1,10 +1,31 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 26-01-2026 a las 00:44:24
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
-CREATE DATABASE `videojuegos`
-SELECT DATABASE `videojuegos`
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `videojuegos`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clients`
+--
 
 CREATE TABLE `clients` (
   `id` int(11) NOT NULL,
@@ -25,22 +46,26 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `name`, `surname`, `email`, `password`, `gender`, `address`, `codpostal`, `poblacion`, `provincia`, `create_time`) VALUES
-(1, 'pepes', 'pepe', 'dasda@gmail.com', '1234', 'f', 'calle carmer 185', '03184', 'Torrevieja', 'Alicante', '2025-12-03 10:32:58'),
-(3, 'Giannis', 'Clondireanu', 'clondireanug@gmail.com', '12345', 'm', 'calle carmer 181', '03184', 'Torrevieja', 'Alicante', '2025-12-03 10:35:18'),
-(4, 'Gianni1', 'Clondireanu', 'dasd31232a@gmail.com', '1234', 'm', 'Calle de los Gladiolos, 184', '03184', 'Torrevieja', 'Alicante', '2025-12-05 09:33:13'),
-(11, 'Enrique', 'Pérez', 'enrique@gmail.com', '1234', 'm', 'calle los jazmines nº93', '03184', 'Torrevieja', 'Alicante', '2025-12-12 09:07:45'),
-(13, 'pepe', 'pepe', 'pepes@gmail.com', '1234', 'f', 'calle carmen 185', '03184', 'Torrevieja', 'Alicante', '2025-12-17 09:06:46'),
-(14, 'dasd', 'adas', 'dasddasa@gmail.com', '1234', 'm', 'dasdsa', 'dsad', 'sadsad', 'Córdoba', '2026-01-20 08:39:52'),
-(15, 'maria', 'diaz', 'maria@gmail.com', '123456', 'm', 'calle maria 12', '1234', 'Torrevieja', 'Alicante', '2026-01-20 08:40:48'),
-(16, 'pepe', 'pepe', 'dasddsadsaa@gmail.com', 'dasdsad', 'm', 'calle carmer 185', '03184', 'Torrevieja', 'Alicante', '2026-01-20 08:41:58'),
-(17, 'Gianni', 'Clondireanu', 'adsadsadda@gmail.com', 'dsadsadsaas', 'm', 'Calle de los Gladiolos, 184', '03184', 'Torrevieja', 'Alicante', '2026-01-20 08:42:10'),
-(18, 'dsadasa', 'diaz', 'adsadsdasdsaadsadadda@gmail.com', 'dasdsadad', 'f', 'Calle de los Gladiolos, 184', '03184', 'Torrevieja', 'Alicante', '2026-01-20 08:42:27'),
-(19, 'pepe', 'pepe', 'dasdadsad12@gmail.com', 'dsadsadad', 'm', 'calle carmer 185', '03184', 'Torrevieja', 'Alicante', '2026-01-20 08:42:51'),
-(20, 'pepe', 'pepe', 'dasddsaaa@gmail.com', '12321312', 'm', 'calle carmer 185', '03184', 'Torrevieja', 'Alicante', '2026-01-20 10:49:38'),
-(22, 'pepe', 'pepe', 'dasdadsadsa@gmail.com', 'dasdad', 'f', 'calle carmer 185', '03184', 'Torrevieja', 'Alicante', '2026-01-20 12:23:24'),
-(23, 'dasd', 'adas', 'dasdadsadas@gmail.com', 'sadadas', 'f', 'dasdsa', 'dsad', 'sadsad', 'Córdoba', '2026-01-20 12:24:49'),
-(24, 'pepe', 'pepe', 'dasdasadada@gmail.com', 'dsadsad', 'm', 'calle carmer 185', '03184', 'Torrevieja', 'Alicante', '2026-01-21 09:13:24'),
-(26, 'jose', 'Luis', 'dasdsadasdddada@gmail.com', 'dsadsadsa', 'f', 'calle carmer 185', '03184', 'Torrevieja', 'Alicante', '2026-01-23 08:47:36');
+(1, 'Ana', 'López', 'ana1@mail.com', '1234', 'F', 'Calle Sol 1', '28001', 'Madrid', 'Madrid', '2026-01-25 23:03:30'),
+(2, 'Carlos', 'Gómez', 'carlos2@mail.com', '1234', 'M', 'Av. Luna 2', '08001', 'Barcelona', 'Barcelona', '2026-01-25 23:03:30'),
+(3, 'Lucía', 'Martínez', 'lucia3@mail.com', '1234', 'F', 'Calle Mar 3', '46001', 'Valencia', 'Valencia', '2026-01-25 23:03:30'),
+(4, 'Pedro', 'Sánchez', 'pedro4@mail.com', '1234', 'M', 'Calle Río 4', '41001', 'Sevilla', 'Sevilla', '2026-01-25 23:03:30'),
+(5, 'María', 'Fernández', 'maria5@mail.com', '1234', 'F', 'Av. Norte 5', '29001', 'Málaga', 'Málaga', '2026-01-25 23:03:30'),
+(6, 'Juan', 'Ruiz', 'juan6@mail.com', '1234', 'M', 'Calle Este 6', '30001', 'Murcia', 'Murcia', '2026-01-25 23:03:30'),
+(7, 'Elena', 'Torres', 'elena7@mail.com', '1234', 'F', 'Calle Oeste 7', '15001', 'A Coruña', 'A Coruña', '2026-01-25 23:03:30'),
+(8, 'David', 'Romero', 'david8@mail.com', '1234', 'M', 'Plaza Centro 8', '50001', 'Zaragoza', 'Zaragoza', '2026-01-25 23:03:30'),
+(9, 'Paula', 'Navarro', 'paula9@mail.com', '1234', 'F', 'Calle Verde 9', '18001', 'Granada', 'Granada', '2026-01-25 23:03:30'),
+(10, 'Jorge', 'Molina', 'jorge10@mail.com', '1234', 'M', 'Av. Azul 10', '02001', 'Albacete', 'Albacete', '2026-01-25 23:03:30'),
+(11, 'Laura', 'Ortega', 'laura11@mail.com', '1234', 'F', 'Calle Roja 11', '33001', 'Oviedo', 'Asturias', '2026-01-25 23:03:30'),
+(12, 'Miguel', 'Castro', 'miguel12@mail.com', '1234', 'M', 'Calle Blanca 12', '24001', 'León', 'León', '2026-01-25 23:03:30'),
+(13, 'Sara', 'Vega', 'sara13@mail.com', '1234', 'F', 'Av. Plata 13', '39001', 'Santander', 'Cantabria', '2026-01-25 23:03:30'),
+(14, 'Iván', 'Iglesias', 'ivan14@mail.com', '1234', 'M', 'Calle Oro 14', '20001', 'San Sebastián', 'Guipúzcoa', '2026-01-25 23:03:30'),
+(15, 'Clara', 'Ramos', 'clara15@mail.com', '1234', 'F', 'Plaza Roja 15', '47001', 'Valladolid', 'Valladolid', '2026-01-25 23:03:30'),
+(16, 'Hugo', 'Gil', 'hugo16@mail.com', '1234', 'M', 'Av. Negra 16', '06001', 'Badajoz', 'Badajoz', '2026-01-25 23:03:30'),
+(17, 'Noelia', 'Campos', 'noelia17@mail.com', '1234', 'F', 'Calle Plata 17', '01001', 'Vitoria', 'Álava', '2026-01-25 23:03:30'),
+(18, 'Raúl', 'Suárez', 'raul18@mail.com', '1234', 'M', 'Calle Dorada 18', '35001', 'Las Palmas', 'Las Palmas', '2026-01-25 23:03:30'),
+(19, 'Andrea', 'Herrera', 'andrea19@mail.com', '1234', 'F', 'Av. Coral 19', '07001', 'Palma', 'Islas Baleares', '2026-01-25 23:03:30'),
+(20, 'Pablo', 'Núñez', 'pablo20@mail.com', '1234', 'M', 'Calle Arena 20', '10001', 'Cáceres', 'Cáceres', '2026-01-25 23:03:30');
 
 -- --------------------------------------------------------
 
@@ -61,12 +86,37 @@ CREATE TABLE `games` (
   `discount` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `games`
+--
 
 INSERT INTO `games` (`id`, `imageUrl`, `name`, `developer`, `platforms`, `genres`, `released_at`, `price`, `stock`, `discount`) VALUES
-(4, '../images/697203d65ae62Captura3.PNG', 'pepe', 'dadas', 'dasdsa', 'dadsa', '2026-01-01', 13, 231, 23),
-(5, '../images/697351e3738a8Captura8.1.PNG', 'dasda', 'sadsad', '231123', 'dsadas', '2026-01-16', 2313, 312, 23);
+(1, '../images/6976a5be54e3bco4jni.webp', 'Elden Ring', 'FromSoftware', 'PC, PS5, Xbox', 'JRPG, Acción', '2022-02-25', 60, 50, 10),
+(2, '../images/6976a633bf2d4gow.webp', 'God of War Ragnarök', 'Santa Monica', 'PC, PS5', 'Acción, Aventura', '2022-11-09', 70, 40, 15),
+(3, '../images/6976a6d8a7229co5vmg.webp', 'Zelda: TOTK', 'Nintendo', 'Switch', 'Aventura', '2023-05-12', 65, 30, 5),
+(4, '../images/6976a6e43c759cb.webp', 'Cyberpunk 2077', 'CD Projekt', 'PC, PS5, Xbox', 'RPG', '2020-12-10', 50, 25, 20),
+(5, '../images/6976a6f168a7cp5.webp', 'Persona 5 Royale', 'ATLUS', 'PC, Consolas', 'JRPG', '2021-10-31', 60, 60, 0),
+(6, '../images/6976a7855f5f3mine.webp', 'Minecraft', 'Mojang', 'PC, Consolas', 'Sandbox', '2011-11-18', 30, 100, 0),
+(7, '../images/6976a78d89c71wtc.webp', 'The Witcher 3', 'CD Projekt', 'PC, PS5, Xbox', 'RPG', '2015-05-19', 40, 35, 25),
+(8, '../images/6976a7973e5b2hori.webp', 'Horizon Zero Dawn', 'Guerrilla', 'PC, PS5', 'Acción, RPG', '2017-02-28', 50, 45, 10),
+(9, '../images/6976a79fd0375rdr2.webp', 'Red Dead Redemption 2', 'Rockstar', 'PC, PS5, Xbox', 'Acción', '2018-10-26', 70, 20, 30),
+(10, '../images/6976a7a8c34fdgta.webp', 'GTA V', 'Rockstar', 'PC, PS5, Xbox', 'Acción', '2013-09-17', 50, 80, 0),
+(11, '../images/6976a8df675d5res.webp', 'Resident Evil 4', 'Capcom', 'PC, PS5, Xbox', 'Terror', '2023-03-24', 60, 25, 10),
+(12, '../images/6976a8fb68b88sek.webp', 'Sekiro', 'FromSoftware', 'PC, PS5, Xbox', 'Acción', '2019-03-22', 55, 15, 20),
+(13, '../images/6976a90602038dark.webp', 'Dark Souls III', 'FromSoftware', 'PC, PS5, Xbox', 'JRPG', '2016-04-12', 50, 20, 25),
+(14, '../images/6976a90f49021spid.webp', 'Spider-Man Remastered', 'Insomniac', 'PC, PS5', 'Acción', '2022-08-12', 60, 35, 10),
+(15, '../images/6976a91f95f64ac.webp', 'Assassin’s Creed Valhalla', 'Ubisoft', 'PC, PS5, Xbox', 'Acción, RPG', '2020-11-10', 60, 40, 20),
+(16, '../images/6976a928a53f7ff.webp', 'Final Fantasy XVI', 'Square Enix', 'PS5', 'RPG', '2023-06-22', 70, 30, 5),
+(17, '../images/6976a9323918chog.webp', 'Hogwarts Legacy', 'Avalanche', 'PC, PS5, Xbox', 'RPG', '2023-02-10', 70, 50, 10),
+(18, '../images/6976a9616ca80mw3.webp', 'Call of Duty MW3', 'Activision', 'PC, PS5, Xbox', 'Shooter', '2023-11-10', 70, 70, 0),
+(19, '../images/6976a96a4c592among.webp', 'Among Us', 'Innersloth', 'PC, Consolas', 'Party', '2018-06-15', 5, 200, 0),
+(20, '../images/6976a98f380a4stard.webp', 'Stardew Valley', 'ConcernedApe', 'PC, Consolas', 'Simulación', '2016-02-26', 15, 150, 0);
 
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `orders`
+--
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
@@ -75,9 +125,15 @@ CREATE TABLE `orders` (
   `status` varchar(50) DEFAULT 'Pendiente',
   `total` decimal(10,2) NOT NULL,
   `paymentMethod` varchar(50) DEFAULT NULL,
-  `shippingAddress` varchar(255) DEFAULT NULL
+  `shippingAddress` varchar(255) DEFAULT NULL,
+  `clientEmail` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `order_items`
+--
 
 CREATE TABLE `order_items` (
   `id` int(11) NOT NULL,
@@ -87,7 +143,11 @@ CREATE TABLE `order_items` (
   `unitPrice` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `users`
+--
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -98,19 +158,32 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
+--
+-- Volcado de datos para la tabla `users`
+--
 
 INSERT INTO `users` (`id`, `email`, `password`, `role`, `name`, `created_at`) VALUES
 (1, 'clondireanug@gmail.com', '8bafac80a6603426da9f48787fde08689c33411c', 1, 'Gianni', '2025-12-01 10:29:51');
 
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `clients`
+--
 ALTER TABLE `clients`
   ADD PRIMARY KEY (`id`);
 
-
+--
+-- Indices de la tabla `games`
+--
 ALTER TABLE `games`
   ADD PRIMARY KEY (`id`);
 
-
+--
+-- Indices de la tabla `orders`
+--
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `client_id` (`client_id`);
@@ -123,36 +196,65 @@ ALTER TABLE `order_items`
   ADD KEY `order_id` (`order_id`),
   ADD KEY `game_id` (`game_id`);
 
-
+--
+-- Indices de la tabla `users`
+--
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
 
+--
+-- AUTO_INCREMENT de la tabla `clients`
+--
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
-
+--
+-- AUTO_INCREMENT de la tabla `games`
+--
 ALTER TABLE `games`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
+--
+-- AUTO_INCREMENT de la tabla `orders`
+--
 ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-
+--
+-- AUTO_INCREMENT de la tabla `order_items`
+--
 ALTER TABLE `order_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
+--
+-- Restricciones para tablas volcadas
+--
 
+--
+-- Filtros para la tabla `orders`
+--
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`);
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE;
 
-
+--
+-- Filtros para la tabla `order_items`
+--
 ALTER TABLE `order_items`
-  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
-  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`);
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
