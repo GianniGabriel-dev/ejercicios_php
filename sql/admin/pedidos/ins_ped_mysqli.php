@@ -117,10 +117,11 @@
               <select class="form-select form-select-lg" name="paymentMethod" id="paymentMethod" required>
                 <option value="" disabled selected>Selecciona el método de pago</option>
                 <option value="Tarjeta">Tarjeta de crédito/débito</option>
+                <option value="Efectivo">Efectivo</option>
                 <option value="Paypal">Paypal</option>
                 <option value="Bizum">Bizum</option>
                 <option value="Transferencia bancaria">Transferencia bancaria</option>
-                <option value="Google pay">Google pay</option>
+                <option value="Google Pay">Google Pay</option>
               </select>
             </div>
         </div>

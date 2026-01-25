@@ -9,7 +9,7 @@
 <?php
     include "../db/db_pdo.inc"; 
    
-    $porPagina = 4;
+    $porPagina = 10;
     $pagina    = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     //el offset indica desde qué registro empezar a mostrar
     $offset = ($pagina - 1) * $porPagina;
@@ -50,7 +50,7 @@
     $rol                   = $_SESSION["rol"];
     $rol == 1 ? $nombreRol = "admin" : $nombreRol = "normal user";
 
-    if (isset($_GET["eliminar"])) {
+    if (isset($_GET["eliminar"]) && $rol==1) {
     $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
     $pdo->prepare("DELETE FROM clients WHERE id=?")->execute([$id]);
     header("location: gestion_clientes.php");
@@ -156,10 +156,13 @@
                                     <td>
                                         <a href="edit_cli_mysqli.php?edit=<?php echo $c['id']; ?>"
                                             class="btn btn-sm btn-warning">✏️</a>
-                                        <button type="button" class="btn btn-sm btn-danger"
-                                            onclick="eliminarCliente(<?php echo $c['id']; ?>)">
-                                            🗑️
-                                        </button>
+                                        <?php
+                                            if($rol == 1){
+                                                echo '<button type="button" class="btn btn-sm btn-danger" onclick="eliminarCliente(' . $c['id'] . ')">
+                                                        🗑️
+                                                      </button>';
+                                            }
+                                        ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -203,13 +206,13 @@
                 <div class="modal-content">
                     <div class="modal-header bg-danger text-white">
                         <h5 class="modal-title">Confirmar eliminación</h5>
-                        <button type="button" class="btn-close" data-bsdismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         ¿Seguro que deseas eliminar este Cliente?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bsdismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
                     </div>
                 </div>

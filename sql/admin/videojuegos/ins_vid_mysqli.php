@@ -41,7 +41,7 @@
                 $fileName    = basename($nombre);
                 $miExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-                $allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+                $allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
                 //se comprueba la extensión del archivo
                 if (in_array($miExtension, $allowedExtensions)) {
                     // Mueve el archivo temporal a la carpeta de destino
@@ -51,6 +51,7 @@
                     return false;
                 }
             }
+
             //validación de campos del formulario, si no cumple algún aspecto, redirige al formulario mostrando un error en los parámetros de la url
             if (isset($_FILES["image"]) && ! empty($_FILES["image"])) {
                 $imagen = uploadPhoto();

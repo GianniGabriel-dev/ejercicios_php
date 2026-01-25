@@ -17,10 +17,14 @@
     $search = isset($_GET["searchParams"]) ? $_GET["searchParams"] : "";
 
     $stmt = $pdo->prepare(
-    "SELECT * FROM orders
-     WHERE clientEmail LIKE :search
-     ORDER BY id DESC
-     LIMIT :limit OFFSET :offset"
+    "SELECT o.*,
+                COALESCE(SUM(oi.quantity * oi.unitPrice), 0) AS total
+        FROM orders o
+        LEFT JOIN order_items oi ON o.id = oi.order_id
+        WHERE o.clientEmail LIKE :search
+        GROUP BY o.id
+        ORDER BY o.id DESC
+        LIMIT :limit OFFSET :offset"
     );
 
     $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
@@ -45,7 +49,7 @@
     $rol                   = $_SESSION["rol"];
     $rol == 1 ? $nombreRol = "admin" : $nombreRol = "normal user";
 
-    if (isset($_GET["eliminar"])) {
+    if (isset($_GET["eliminar"]) && $rol == 1) {
     $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
     $pdo->prepare("DELETE FROM orders WHERE id=?")->execute([$id]);
     header("location: gestion_pedidos.php");
@@ -135,23 +139,40 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                                // array con estilos para el status personalizados
+                                $statusClasses = [
+                                    "Pendiente" => "bg-warning text-dark",
+                                    "Pagado"    => "bg-info text-dark",
+                                    "Enviado"   => "bg-primary",
+                                    "Entregado" => "bg-success",
+                                    "Cancelado" => "bg-danger",
+                                ];
+                            ?>
                             <?php foreach ($orders as $o): ?>
                                 <tr>
                                     <td><?php echo $o['id'] ?></td>
                                     <td><?php echo htmlspecialchars($o['client_id']) ?></td>
                                     <td><?php echo htmlspecialchars($o['clientEmail']) ?></td>
                                     <td><?php echo $o['orderDate'] ?></td>
-                                    <td><?php echo htmlspecialchars($o['status']) ?></td>
+                                    <td>
+                                        <span class="badge <?php echo $statusClasses[$o['status']] ?>">
+                                            <?php echo htmlspecialchars($o['status']) ?>
+                                        </span>
+                                    </td>
                                     <td><?php echo htmlspecialchars($o['paymentMethod']) ?></td>
                                     <td><?php echo htmlspecialchars($o['shippingAddress']) ?></td>
                                     <td><?php echo htmlspecialchars($o['total']) ?> €</td>
                                     <td>
                                         <a href="edit_ped_mysqli.php?edit=<?php echo $o['id']; ?>"
                                             class="btn btn-sm btn-warning">✏️</a>
-                                        <button type="button" class="btn btn-sm btn-danger"
-                                            onclick="eliminarPedido(<?php echo $o['id']; ?>)">
-                                            🗑️
-                                        </button>
+                                        <?php
+                                            if ($rol == 1) {
+                                                echo '<button type="button" class="btn btn-sm btn-danger" onclick="eliminarPedido(' . $o['id'] . ')">
+                                                        🗑️
+                                                      </button>';
+                                            }
+                                        ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -187,13 +208,13 @@
                 <div class="modal-content">
                     <div class="modal-header bg-danger text-white">
                         <h5 class="modal-title">Confirmar eliminación</h5>
-                        <button type="button" class="btn-close" data-bsdismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        ¿Seguro que deseas eliminar este Cliente?
+                        ¿Seguro que deseas eliminar este Pedido?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bsdismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
                     </div>
                 </div>

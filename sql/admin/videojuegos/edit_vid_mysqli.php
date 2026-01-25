@@ -46,7 +46,7 @@
 
                     $fileName          = basename($nombre);
                     $miExtension       = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-                    $allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+                    $allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
 
                     if (in_array($miExtension, $allowedExtensions)) {
                         if (move_uploaded_file($nombre_temp, $ruta_final)) {

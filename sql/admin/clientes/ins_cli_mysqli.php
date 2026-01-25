@@ -83,8 +83,8 @@
                 <label for="genero" class="form-label fw-semibold">Género</label>
                 <select class="form-select form-select-lg" name="genero" id="genero" required>
                 <option value="" disabled selected>Selecciona género</option>
-                <option value="f">Femenino</option>
-                <option value="m">Masculino</option>
+                <option value="F">Femenino</option>
+                <option value="M">Masculino</option>
                 </select>
             </div>
             </div>

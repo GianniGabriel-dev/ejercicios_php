@@ -7,9 +7,9 @@
 ?>
 
 <?php
-    include "../db/db_pdo.inc"; // Incluimos la conexión a la BD
-                            // Obtener solo los 10 primeros clientes
-    $porPagina = 10;
+    include "../db/db_pdo.inc";
+    // Obtener solo los 5 primeros videojuegos
+    $porPagina = 5;
     $pagina    = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     //el offset indica desde qué registro empezar a mostrar
     $offset = ($pagina - 1) * $porPagina;
@@ -19,7 +19,7 @@
     $stmt = $pdo->prepare(
     "SELECT * FROM games
      WHERE name LIKE :search
-     ORDER BY id DESC
+     ORDER BY id ASC
      LIMIT :limit OFFSET :offset"
     );
 
@@ -30,7 +30,7 @@
     $stmt->execute();
     $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    //sacar el total de clientes para calcular cuantas paginas mostrar
+    //sacar el total de videojuegos para calcular cuantas paginas mostrar
     $totalGames = $pdo->prepare(
     "SELECT COUNT(*) FROM games
         WHERE name LIKE :search"
@@ -45,7 +45,7 @@
     $rol                   = $_SESSION["rol"];
     $rol == 1 ? $nombreRol = "admin" : $nombreRol = "normal user";
 
-    if (isset($_GET["eliminar"])) {
+    if (isset($_GET["eliminar"]) && $rol==1) {
     $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
     $pdo->prepare("DELETE FROM games WHERE id=?")->execute([$id]);
     header("location: gestion_videojuegos.php");
@@ -152,16 +152,19 @@
                                     <td><?php echo $g['platforms'] ?></td>
                                     <td><?php echo htmlspecialchars($g['genres']) ?></td>
                                     <td><?php echo $g['released_at'] ?></td>
-                                    <td><?php echo htmlspecialchars($g['price']) ?></td>
+                                    <td><?php echo htmlspecialchars($g['price']) ?>€</td>
                                     <td><?php echo htmlspecialchars($g['stock']) ?></td>
-                                    <td><?php echo htmlspecialchars($g['discount']) ?></td>
+                                    <td><?php echo htmlspecialchars($g['discount']) ?>%</td>
                                     <td>
                                         <a href="edit_vid_mysqli.php?edit=<?php echo $g['id']; ?>"
                                             class="btn btn-sm btn-warning">✏️</a>
-                                        <button type="button" class="btn btn-sm btn-danger"
-                                            onclick="eliminarCliente(<?php echo $g['id']; ?>)">
-                                            🗑️
-                                        </button>
+                                        <?php
+                                            if($rol == 1){
+                                                echo '<button type="button" class="btn btn-sm btn-danger" onclick="eliminarProducto(' . $g['id'] . ')">
+                                                        🗑️
+                                                      </button>';
+                                            }
+                                        ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -197,13 +200,13 @@
                 <div class="modal-content">
                     <div class="modal-header bg-danger text-white">
                         <h5 class="modal-title">Confirmar eliminación</h5>
-                        <button type="button" class="btn-close" data-bsdismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        ¿Seguro que deseas eliminar este Cliente?
+                        ¿Seguro que deseas eliminar este Videojuego?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bsdismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
                     </div>
                 </div>
@@ -213,7 +216,7 @@
     </main>
 </body>
 <script>
-    function eliminarCliente(idGame) {
+    function eliminarProducto(idGame) {
         const modal = new
         bootstrap.Modal(document.getElementById('confirmModal'));
         modal.show();

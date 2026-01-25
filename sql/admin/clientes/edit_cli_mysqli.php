@@ -92,8 +92,8 @@
                             <label for="genero" class="form-label fw-semibold">Género</label>
                             <select name="genero" id="genero" class="form-select form-select-lg" required>
                                 <option>Seleccione una opción</option>
-                                <option value="f" <?php echo($clientes["gender"] == "f") ? "selected" : "" ?>>Femenino</option>
-                                <option value="m" <?php echo($clientes["gender"] == "m") ? "selected" : "" ?>>Masculino</option>
+                                <option value="F" <?php echo($clientes["gender"] == "F") ? "selected" : "" ?>>Femenino</option>
+                                <option value="M" <?php echo($clientes["gender"] == "M") ? "selected" : "" ?>>Masculino</option>
                             </select>
                         </div>
                     </div>
