@@ -7,8 +7,8 @@
 ?>
 
 <?php
-    include "../db/db_pdo.inc"; // Incluimos la conexión a la BD
-                            // Obtener solo los 4 primeros clientes
+    include "../db/db_pdo.inc"; 
+   
     $porPagina = 4;
     $pagina    = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     //el offset indica desde qué registro empezar a mostrar
@@ -97,10 +97,10 @@
             </ul>
         </aside>
         <div class="container-fluid flex-grow-1 overflow-auto ">
-            <h2 class="text-center mb-4 mt-4">📋 Gestión de Clientes</h2>
+            <h2 class="text-center mb-4 mt-4">👤 Gestión de Clientes</h2>
             <!-- Tabla de clientes -->
             <div class="card shadow  d-flex">
-                <div class="card-header bg-secondary text-white">📋 Lista de
+                <div class="card-header bg-secondary text-white">👤 Lista de
                     Clientes</div>
                 <div class="card-body flex-column">
                     <?php

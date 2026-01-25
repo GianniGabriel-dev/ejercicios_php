@@ -55,7 +55,7 @@
 
     <div class="card shadow-lg col-12 col-md-10 col-lg-8">
         <div class="card-header bg-primary text-white text-center">
-        <h3 class="mb-0">🧾 Registrar nuevo cliente</h3>
+        <h3 class="mb-0">👤 Registrar nuevo cliente</h3>
         </div>
 
         <div class="card-body px-4 py-4">

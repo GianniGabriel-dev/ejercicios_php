@@ -17,8 +17,8 @@
     $search = isset($_GET["searchParams"]) ? $_GET["searchParams"] : "";
 
     $stmt = $pdo->prepare(
-    "SELECT * FROM games
-     WHERE name LIKE :search
+    "SELECT * FROM orders
+     WHERE clientEmail LIKE :search
      ORDER BY id DESC
      LIMIT :limit OFFSET :offset"
     );
@@ -28,18 +28,18 @@
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
     $stmt->execute();
-    $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     //sacar el total de clientes para calcular cuantas paginas mostrar
-    $totalGames = $pdo->prepare(
-    "SELECT COUNT(*) FROM games
-        WHERE name LIKE :search"
+    $totalOrders = $pdo->prepare(
+    "SELECT COUNT(*) FROM orders
+        WHERE clientEmail LIKE :search"
     );
-    $totalGames->bindValue(':search', "%$search%", PDO::PARAM_STR);
-    $totalGames->execute();
-    $totalGames = $totalGames->fetchColumn();
+    $totalOrders->bindValue(':search', "%$search%", PDO::PARAM_STR);
+    $totalOrders->execute();
+    $totalOrders = $totalOrders->fetchColumn();
 
-    $totalPaginas = ceil($totalGames / $porPagina);
+    $totalPaginas = ceil($totalOrders / $porPagina);
     //se guarda nombre y rol del usuario para mostrarlo en la sidebar
     $nombre                = $_SESSION["nombre"];
     $rol                   = $_SESSION["rol"];
@@ -47,7 +47,7 @@
 
     if (isset($_GET["eliminar"])) {
     $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
-    $pdo->prepare("DELETE FROM games WHERE id=?")->execute([$id]);
+    $pdo->prepare("DELETE FROM orders WHERE id=?")->execute([$id]);
     header("location: gestion_pedidos.php");
     }
 ?>
@@ -124,39 +124,32 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>ID</th>
-                                <th>Cliente</th>
+                                <th>ID de cliente</th>
+                                <th>Email de cliente</th>
                                 <th>Fecha pedido</th>
                                 <th>Estado</th>
-                                <th>Metodo de pago</th>
+                                <th>Método de pago</th>
                                 <th>Dirección pedido</th>
                                 <th>Total</th>
-                                <th>Precio</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($games as $g): ?>
+                            <?php foreach ($orders as $o): ?>
                                 <tr>
-                                    <td><?php echo $g['id'] ?></td>
+                                    <td><?php echo $o['id'] ?></td>
+                                    <td><?php echo htmlspecialchars($o['client_id']) ?></td>
+                                    <td><?php echo htmlspecialchars($o['clientEmail']) ?></td>
+                                    <td><?php echo $o['orderDate'] ?></td>
+                                    <td><?php echo htmlspecialchars($o['status']) ?></td>
+                                    <td><?php echo htmlspecialchars($o['paymentMethod']) ?></td>
+                                    <td><?php echo htmlspecialchars($o['shippingAddress']) ?></td>
+                                    <td><?php echo htmlspecialchars($o['total']) ?> €</td>
                                     <td>
-                                        <img
-                                            width="70"
-                                            height="90"
-                                            src="<?php echo htmlspecialchars($g['imageUrl']) ?>"
-                                            alt="image of game <?php echo htmlspecialchars($g['name']) ?>">
-                                    </td>
-                                    <td><?php echo htmlspecialchars($g['name']) ?></td>
-                                    <td><?php echo htmlspecialchars($g['developer']) ?></td>
-                                    <td><?php echo $g['platforms'] ?></td>
-                                    <td><?php echo htmlspecialchars($g['genres']) ?></td>
-                                    <td><?php echo $g['released_at'] ?></td>
-                                    <td><?php echo htmlspecialchars($g['price']) ?></td>
-                                    <td><?php echo htmlspecialchars($g['stock']) ?></td>
-                                    <td><?php echo htmlspecialchars($g['discount']) ?></td>
-                                    <td>
-                                        <a href="edit_ped_mysqli.php?edit=<?php echo $g['id']; ?>"
+                                        <a href="edit_ped_mysqli.php?edit=<?php echo $o['id']; ?>"
                                             class="btn btn-sm btn-warning">✏️</a>
                                         <button type="button" class="btn btn-sm btn-danger"
-                                            onclick="eliminarCliente(<?php echo $g['id']; ?>)">
+                                            onclick="eliminarPedido(<?php echo $o['id']; ?>)">
                                             🗑️
                                         </button>
                                     </td>
@@ -210,12 +203,12 @@
     </main>
 </body>
 <script>
-    function eliminarCliente(idGame) {
+    function eliminarPedido(idPedido) {
         const modal = new
         bootstrap.Modal(document.getElementById('confirmModal'));
         modal.show();
         document.getElementById('confirmDeleteBtn').onclick = () => {
-            window.location.href = 'gestion_pedidos.php?eliminar=' + idGame
+            window.location.href = 'gestion_pedidos.php?eliminar=' + idPedido
             modal.hide();
         };
     }
