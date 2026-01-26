@@ -43,7 +43,8 @@
     //se guarda nombre y rol del usuario para mostrarlo en la sidebar
     $nombre                = $_SESSION["nombre"];
     $rol                   = $_SESSION["rol"];
-    $rol == 1 ? $nombreRol = "admin" : $nombreRol = "normal user";
+    $rol == 1 ? $nombreRol = "Admin" : $nombreRol = "Usuario Normal";
+    $avatar= $_SESSION["avatar"];
 
     if (isset($_GET["eliminar"]) && $rol==1) {
     $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
@@ -67,9 +68,9 @@
 
 <body>
     <main class="d-flex overflow-hidden vh-100">
-        <aside class="p-3  bg-secondary-subtle h-100" >
+        <aside style="width: 300px;" class="p-3 bg-secondary-subtle h-100" >
             <div class="d-flex p-2 align-items-center">
-                <img src="../images/admin.jpg" alt="image of user" width="60" height="60" class="rounded-circle me-2">
+                <img src="../images/profileImages/<?= $avatar?>" alt="image of user" width="60" height="60" class="rounded-circle me-2">
                 <div class="card-body d-flex flex-column gap-0">
                     <p class="m-0 h6 font-weight-bold"><?php echo $nombre ?></p>
                     <p class="m-0"><?php echo $nombreRol ?></p>
@@ -89,6 +90,15 @@
                 <li>
                     <a href="../pedidos/gestion_pedidos.php" class="nav-link link-dark">Pedidos</a>
                 </li>
+                <?php
+                    if ($rol == 1) {
+                        echo '
+                            <li>
+                                <a href="../usuarios/gestion_usuarios.php" class="nav-link link-dark">Usuarios</a>
+                            </li>
+                        ';
+                    }
+                ?>
             </ul>
     </aside>
         <div class="container-fluid flex-grow-1 overflow-auto ">

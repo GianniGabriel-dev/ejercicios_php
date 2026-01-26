@@ -20,7 +20,7 @@
     if (isset($_POST["password"]) && ! empty($_POST["password"])) {
         $email    = htmlspecialchars(trim($_POST["email"]));
         $password = htmlspecialchars(sha1($_POST["password"]));
-        $check    = $conn->prepare("SELECT email, email, role FROM users
+        $check    = $conn->prepare("SELECT name, email, role, avatar FROM users
     WHERE email = ? AND password =?");
         //Utilizamos bind_param para evitar inyecciones de código sql
         //Asocio las variables PHP a los placeholders (?) de la consulta preparada, indicando el tipo de dato.
@@ -31,10 +31,11 @@
         if ($check->num_rows > 0) { //Si las credenciales son válidas -> hay una fila coincidente en la BD
             session_start();
             // Vinculo las variables donde se guardarán los resultados de la consulta
-            $check->bind_result($nombre, $emailDB, $rol);
+            $check->bind_result($nombre, $emailDB, $rol, $avatar);
             $check->fetch(); //Extraigo la fila de resultados y lleno esas variables.
             $_SESSION["nombre"] = $nombre;
             $_SESSION["rol"]    = $rol;
+            $_SESSION["avatar"]    = $avatar;
 
             $_SESSION["email"] = $emailDB;
             header("location:./panelControl.php");
