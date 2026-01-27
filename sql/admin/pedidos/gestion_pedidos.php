@@ -175,7 +175,13 @@
                                     <td><?php echo htmlspecialchars($o['total']) ?> €</td>
                                     <td>
                                         <a href="edit_ped_mysqli.php?edit=<?php echo $o['id']; ?>"
-                                            class="btn btn-sm btn-warning">✏️</a>
+                                            class="btn btn-sm btn-warning">✏️
+                                        </a>
+
+                                        <a href="view_ped_mysqli.php?view=<?php echo $o['id']; ?>"
+                                            class="btn btn-sm btn-primary">👁️
+                                        </a>
+
                                         <?php
                                             if ($rol == 1) {
                                                 echo '<button type="button" class="btn btn-sm btn-danger" onclick="eliminarPedido(' . $o['id'] . ')">
