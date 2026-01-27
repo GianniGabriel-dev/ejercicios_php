@@ -19,15 +19,16 @@
 <body>
   <?php
       include "../db/db.inc";
-      // Obtener datos del pedido a editar
+      // Obtener datos del pedido para ver el contenido del mismo y calcular el total aplicancdo descuentos
       if (isset($_GET["view"])) {
           $id  = intval($_GET["view"]);
           $sql = "SELECT 
             oi.game_id,
             oi.quantity,
-            oi.unitPrice,
+            g.price AS unitPrice,
             g.name,
             g.imageUrl,
+            g.discount,
             (oi.quantity * oi.unitPrice) AS totalItem
             FROM order_items as oi
             JOIN games g ON oi.game_id = g.id
@@ -42,31 +43,82 @@
 
 <main class="container-fluid min-vh-100 d-flex justify-content-center align-items-start">
   <div class="card shadow-lg col-12" style="min-height: 40vh;">
-    <div class="card-header bg-primary text-white text-center">
+    <div class="d-flex justify-content-between align-items-center card-header bg-primary text-white text-center">
       <h3 class="mb-0">📦 Ver pedido</h3>
+      <a class="text-white fs-3" href="gestion_pedidos.php">Atrás</a>
     </div>
     <div class="card-body px-4 py-4">
-        <?php
-            $res = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($res) > 0) {
-                while($order = mysqli_fetch_assoc($res)){
-                    
-                    ?>
-                    <div class="order-item mb-3 p-2 border rounded d-flex align-items-center">
-                        <img src="<?php echo $order['imageUrl']; ?>" alt="<?php echo $order['name']; ?>" class="me-3" style="width:60px; height:80px; object-fit:cover;">
-                        <div>
-                            <h5 class="mb-1"><?php echo htmlspecialchars($order['name']); ?></h5>
-                            <p class="mb-0">Cantidad: <?php echo $order['quantity']; ?></p>
-                            <p class="mb-0">Precio unitario: $<?php echo number_format($order['unitPrice'],2); ?></p>
-                            <p class="mb-0 fw-bold">Total: $<?php echo number_format($order['quantity'] * $order['unitPrice'],2); ?></p>
-                        </div>
-                    </div>
-                    <?php
-                }
-            } else {
-                echo "<p class='text-center'>No hay productos en este pedido.</p>";
-            }
+    <?php
+      $total = 0;
+      $res = mysqli_query($conn, $sql);
+
+      if (mysqli_num_rows($res) > 0) {
+          while ($order = mysqli_fetch_assoc($res)) {
+              //por cada producto se calcula el precio con el descuento aplicado y se va calcualdo el total global del pedido
+              $unitPrice = $order["unitPrice"];
+              $quantity  = $order["quantity"];
+              $discount  = $order["discount"]; // %
+              $subtotal  = $unitPrice * $quantity;
+
+              $discountAmount = $subtotal * ($discount / 100);
+              $subtotalWithDiscount = $subtotal - $discountAmount;
+
+              $total += $subtotalWithDiscount;
+              ?>
+
+              <div class="card mb-3 shadow-sm">
+                  <div class="card-body d-flex align-items-center">
+
+                      <!-- Imagen -->
+                      <img
+                          src="<?= $order['imageUrl']; ?>"
+                          alt="<?= htmlspecialchars($order['name']); ?>"
+                          class="rounded me-3"
+                          style="width:70px; height:90px; object-fit:cover;"
+                      >
+
+                      <!-- Info producto -->
+                      <div class="flex-grow-1">
+                          <h6 class="mb-1"><?= htmlspecialchars($order['name']); ?></h6>
+                          <small class="text-muted">Cantidad: <?= $quantity; ?></small>
+                      </div>
+
+                      <!-- Precios -->
+                      <div class="text-end">
+                          <?php if ($discount > 0): ?>
+                              <div class="text-muted text-decoration-line-through">
+                                  <?= number_format($subtotal, 2); ?> €
+                              </div>
+                              <div class="text-success fw-semibold">
+                                  -<?= $discount; ?>%
+                              </div>
+                          <?php endif; ?>
+
+                          <div class="fw-bold fs-6">
+                              <?= number_format($subtotalWithDiscount, 2); ?> €
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+
+              <?php
+          }
         ?>
+
+    <!-- Resumen del carrito -->
+    <div class="card mt-4 border-0 shadow">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Total del pedido</h5>
+            <h4 class="mb-0 fw-bold"><?= number_format($total, 2); ?> €</h4>
+        </div>
+    </div>
+
+    <?php
+} else {
+    echo "<p class='text-center text-muted'>No hay productos en este pedido.</p>";
+}
+?>
     </div>
   </div>
 </main>

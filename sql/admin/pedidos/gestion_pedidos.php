@@ -8,7 +8,7 @@
 
 <?php
     include "../db/db_pdo.inc"; // Incluimos la conexión a la BD
-                            // Obtener solo los 10 primeros clientes
+    // Obtener solo los 10 primeros pedidos
     $porPagina = 10;
     $pagina    = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     //el offset indica desde qué registro empezar a mostrar
@@ -17,12 +17,9 @@
     $search = isset($_GET["searchParams"]) ? $_GET["searchParams"] : "";
 
     $stmt = $pdo->prepare(
-    "SELECT o.*,
-                COALESCE(SUM(oi.quantity * oi.unitPrice), 0) AS total
+        "SELECT o.*
         FROM orders o
-        LEFT JOIN order_items oi ON o.id = oi.order_id
         WHERE o.clientEmail LIKE :search
-        GROUP BY o.id
         ORDER BY o.id DESC
         LIMIT :limit OFFSET :offset"
     );
@@ -34,7 +31,7 @@
     $stmt->execute();
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    //sacar el total de clientes para calcular cuantas paginas mostrar
+    //sacar el total de pedidos para calcular cuantas paginas mostrar
     $totalOrders = $pdo->prepare(
     "SELECT COUNT(*) FROM orders
         WHERE clientEmail LIKE :search"

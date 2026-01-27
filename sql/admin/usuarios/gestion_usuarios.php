@@ -47,8 +47,11 @@
     $nombre                = $_SESSION["nombre"];
     $rol                   = $_SESSION["rol"];
     $rol == 1 ? $nombreRol = "Admin" : $nombreRol = "Usuario Normal";
+    $avatar= $_SESSION["avatar"];
+    $userId= $_SESSION["id"];
 
-    if (isset($_GET["eliminar"]) && $rol==1) {
+    //elimina el usuario seleccionado siempre y cuando no sea el mismo que ha iniciado sesión
+    if (isset($_GET["eliminar"]) && $rol==1 && $userId != $_GET["eliminar"]) {
     $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
     $pdo->prepare("DELETE FROM users WHERE id=?")->execute([$id]);
     header("location: gestion_usuarios.php");
@@ -72,7 +75,7 @@
     <main class="d-flex overflow-hidden vh-100">
         <aside style="width: 300px;" class="p-3  bg-secondary-subtle h-100" >
             <div class="d-flex p-2 align-items-center">
-                <img src="../images/admin.jpg" alt="image of user" width="60" height="60" class="rounded-circle me-2">
+                <img src="../images/profileImages/<?= $avatar?>" alt="image of user" width="60" height="60" class="rounded-circle me-2">
                 <div class="card-body d-flex flex-column gap-0">
                     <p class="m-0 h6 font-weight-bold"><?php echo $nombre ?></p>
                     <p class="m-0"><?php echo $nombreRol ?></p>
@@ -158,7 +161,7 @@
                                     <td><?php echo $u['created_at'] ?></td>
                                     <td>
                                         <?php
-                                            if($rol == 1){
+                                            if($rol == 1 && $userId != $u['id']){
                                                 echo '<button type="button" class="btn btn-sm btn-danger" onclick="eliminarProducto(' . $u['id'] . ')">
                                                         🗑️
                                                       </button>';

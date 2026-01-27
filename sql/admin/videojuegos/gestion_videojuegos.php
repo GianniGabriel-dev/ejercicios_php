@@ -46,13 +46,25 @@
     $rol == 1 ? $nombreRol = "Admin" : $nombreRol = "Usuario Normal";
     $avatar= $_SESSION["avatar"];
 
-    if (isset($_GET["eliminar"]) && $rol==1) {
+    if (isset($_GET["eliminar"]) && $rol == 1) {
     $id = intval($_GET["eliminar"]); //cod en bd que quiero eliminar
-    $pdo->prepare("DELETE FROM games WHERE id=?")->execute([$id]);
-    header("location: gestion_videojuegos.php");
+    //se compruba si el videojuego está en algún pedido para impedirla
+    $existsInOrder = $pdo->prepare("SELECT COUNT(*) FROM order_items WHERE game_id=?");
+    $existsInOrder->execute([$id]);
+    if($existsInOrder->fetchColumn() > 0){
+        echo '
+            <script>
+                alert("⚠️ No se puede eliminar el videojuego porque está asociado a uno o más pedidos.");
+                window.location.href = "gestion_videojuegos.php";
+            </script>
+            ';
+    }else{
+        //si no está en ningún pedido se elimina directamente
+        $pdo->prepare("DELETE FROM games WHERE id=?")->execute([$id]);
+        header("location: gestion_videojuegos.php");
+    }
     }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">

@@ -22,14 +22,14 @@
     <?php
         include "../db/db.inc";
 
-        //consultas de creación de pedidos
+        //consultas de creación de pedidos que se ejecuta cuando se envian todos los campos del formulario
         if (isset($_POST['client_id'], $_POST['paymentMethod'], $_POST["products"], $_POST["quantity"])) {
             $client_id     = intval($_POST['client_id']);
             $paymentMethod = $_POST['paymentMethod'];
             $products      = $_POST["products"]; //array de porductos añadidos
             $quantities    = $_POST["quantity"]; //array de cantidad de cada producto
 
-            // Se obine la direccion del cliente para insertarlo automáticamente en el pedido
+            // Se obtiene la direccion del cliente para insertarlo automáticamente en el pedido
             $sql_client = "SELECT address, email FROM clients WHERE id = $client_id";
             $res_client = mysqli_query($conn, $sql_client);
 
@@ -50,16 +50,20 @@
                     $quantity   = intval($quantities[$index]);
 
                     // Obtener precio real del producto y el stock
-                    $sql_price = "SELECT price,stock  FROM games WHERE id = $product_id";
+                    $sql_price = "SELECT price,stock,discount FROM games WHERE id = $product_id";
                     $res_price = mysqli_query($conn, $sql_price);
 
                     $row_price = mysqli_fetch_assoc($res_price);
                     $price     = floatval($row_price['price']);
                     $stock     = intval($row_price['stock']);
-
+                    $discount  = floatval($row_price['discount']);
+                    // Aplicar descuento si existe
+                    if ($discount > 0) {
+                        $price = $price - ($price * $discount / 100);
+                    }
                     $subtotal  = $price * $quantity;
                     $total    += $subtotal;
-
+    
                     // Se Inserta detalles del pedido
                     $sql_item = "INSERT INTO order_items (order_id, game_id, quantity, unitPrice)
                      VALUES ($order_id, $product_id, $quantity, $price)";
@@ -71,6 +75,7 @@
                                         WHERE id = $product_id";
                     mysqli_query($conn, $sql_update_stock);
                 }
+  
                 // Se actualiza el precio total del pedido
                 $sql_update_total = "UPDATE orders SET total = $total WHERE id = $order_id";
                 mysqli_query($conn, $sql_update_total);

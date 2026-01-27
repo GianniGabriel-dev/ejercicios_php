@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-01-2026 a las 00:44:24
+-- Tiempo de generación: 27-01-2026 a las 23:03:18
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -91,26 +91,26 @@ CREATE TABLE `games` (
 --
 
 INSERT INTO `games` (`id`, `imageUrl`, `name`, `developer`, `platforms`, `genres`, `released_at`, `price`, `stock`, `discount`) VALUES
-(1, '../images/6976a5be54e3bco4jni.webp', 'Elden Ring', 'FromSoftware', 'PC, PS5, Xbox', 'JRPG, Acción', '2022-02-25', 60, 50, 10),
-(2, '../images/6976a633bf2d4gow.webp', 'God of War Ragnarök', 'Santa Monica', 'PC, PS5', 'Acción, Aventura', '2022-11-09', 70, 40, 15),
-(3, '../images/6976a6d8a7229co5vmg.webp', 'Zelda: TOTK', 'Nintendo', 'Switch', 'Aventura', '2023-05-12', 65, 30, 5),
-(4, '../images/6976a6e43c759cb.webp', 'Cyberpunk 2077', 'CD Projekt', 'PC, PS5, Xbox', 'RPG', '2020-12-10', 50, 25, 20),
-(5, '../images/6976a6f168a7cp5.webp', 'Persona 5 Royale', 'ATLUS', 'PC, Consolas', 'JRPG', '2021-10-31', 60, 60, 0),
-(6, '../images/6976a7855f5f3mine.webp', 'Minecraft', 'Mojang', 'PC, Consolas', 'Sandbox', '2011-11-18', 30, 100, 0),
-(7, '../images/6976a78d89c71wtc.webp', 'The Witcher 3', 'CD Projekt', 'PC, PS5, Xbox', 'RPG', '2015-05-19', 40, 35, 25),
-(8, '../images/6976a7973e5b2hori.webp', 'Horizon Zero Dawn', 'Guerrilla', 'PC, PS5', 'Acción, RPG', '2017-02-28', 50, 45, 10),
-(9, '../images/6976a79fd0375rdr2.webp', 'Red Dead Redemption 2', 'Rockstar', 'PC, PS5, Xbox', 'Acción', '2018-10-26', 70, 20, 30),
-(10, '../images/6976a7a8c34fdgta.webp', 'GTA V', 'Rockstar', 'PC, PS5, Xbox', 'Acción', '2013-09-17', 50, 80, 0),
-(11, '../images/6976a8df675d5res.webp', 'Resident Evil 4', 'Capcom', 'PC, PS5, Xbox', 'Terror', '2023-03-24', 60, 25, 10),
-(12, '../images/6976a8fb68b88sek.webp', 'Sekiro', 'FromSoftware', 'PC, PS5, Xbox', 'Acción', '2019-03-22', 55, 15, 20),
-(13, '../images/6976a90602038dark.webp', 'Dark Souls III', 'FromSoftware', 'PC, PS5, Xbox', 'JRPG', '2016-04-12', 50, 20, 25),
-(14, '../images/6976a90f49021spid.webp', 'Spider-Man Remastered', 'Insomniac', 'PC, PS5', 'Acción', '2022-08-12', 60, 35, 10),
-(15, '../images/6976a91f95f64ac.webp', 'Assassin’s Creed Valhalla', 'Ubisoft', 'PC, PS5, Xbox', 'Acción, RPG', '2020-11-10', 60, 40, 20),
-(16, '../images/6976a928a53f7ff.webp', 'Final Fantasy XVI', 'Square Enix', 'PS5', 'RPG', '2023-06-22', 70, 30, 5),
-(17, '../images/6976a9323918chog.webp', 'Hogwarts Legacy', 'Avalanche', 'PC, PS5, Xbox', 'RPG', '2023-02-10', 70, 50, 10),
-(18, '../images/6976a9616ca80mw3.webp', 'Call of Duty MW3', 'Activision', 'PC, PS5, Xbox', 'Shooter', '2023-11-10', 70, 70, 0),
-(19, '../images/6976a96a4c592among.webp', 'Among Us', 'Innersloth', 'PC, Consolas', 'Party', '2018-06-15', 5, 200, 0),
-(20, '../images/6976a98f380a4stard.webp', 'Stardew Valley', 'ConcernedApe', 'PC, Consolas', 'Simulación', '2016-02-26', 15, 150, 0);
+(1, '../images/6976a5be54e3bco4jni.webp', 'Elden Ring', 'FromSoftware', 'PC, PS5, Xbox', 'JRPG, Acción', '2022-02-25', 60, 44, 10),
+(2, '../images/6976a633bf2d4gow.webp', 'God of War Ragnarök', 'Santa Monica', 'PC, PS5', 'Acción, Aventura', '2022-11-09', 70, 38, 15),
+(3, '../images/6976a6d8a7229co5vmg.webp', 'Zelda: TOTK', 'Nintendo', 'Switch', 'Aventura', '2023-05-12', 65, 20, 5),
+(4, '../images/6976a6e43c759cb.webp', 'Cyberpunk 2077', 'CD Projekt', 'PC, PS5, Xbox', 'RPG', '2020-12-10', 50, 21, 20),
+(5, '../images/6976a6f168a7cp5.webp', 'Persona 5 Royale', 'ATLUS', 'PC, Consolas', 'JRPG', '2021-10-31', 60, 56, 0),
+(6, '../images/6976a7855f5f3mine.webp', 'Minecraft', 'Mojang', 'PC, Consolas', 'Sandbox', '2011-11-18', 30, 93, 0),
+(7, '../images/6976a78d89c71wtc.webp', 'The Witcher 3', 'CD Projekt', 'PC, PS5, Xbox', 'RPG', '2015-05-19', 40, 33, 25),
+(8, '../images/6976a7973e5b2hori.webp', 'Horizon Zero Dawn', 'Guerrilla', 'PC, PS5', 'Acción, RPG', '2017-02-28', 50, 43, 10),
+(9, '../images/6976a79fd0375rdr2.webp', 'Red Dead Redemption 2', 'Rockstar', 'PC, PS5, Xbox', 'Acción', '2018-10-26', 70, 15, 30),
+(10, '../images/6976a7a8c34fdgta.webp', 'GTA V', 'Rockstar', 'PC, PS5, Xbox', 'Acción', '2013-09-17', 50, 77, 0),
+(11, '../images/6976a8df675d5res.webp', 'Resident Evil 4', 'Capcom', 'PC, PS5, Xbox', 'Terror', '2023-03-24', 60, 22, 10),
+(12, '../images/6976a8fb68b88sek.webp', 'Sekiro', 'FromSoftware', 'PC, PS5, Xbox', 'Acción', '2019-03-22', 55, 10, 20),
+(13, '../images/6976a90602038dark.webp', 'Dark Souls III', 'FromSoftware', 'PC, PS5, Xbox', 'JRPG', '2016-04-12', 50, 15, 25),
+(14, '../images/6976a90f49021spid.webp', 'Spider-Man Remastered', 'Insomniac', 'PC, PS5', 'Acción', '2022-08-12', 60, 32, 10),
+(15, '../images/6976a91f95f64ac.webp', 'Assassin’s Creed Valhalla', 'Ubisoft', 'PC, PS5, Xbox', 'Acción, RPG', '2020-11-10', 60, 39, 20),
+(16, '../images/6976a928a53f7ff.webp', 'Final Fantasy XVI', 'Square Enix', 'PS5', 'RPG', '2023-06-22', 70, 26, 5),
+(17, '../images/6976a9323918chog.webp', 'Hogwarts Legacy', 'Avalanche', 'PC, PS5, Xbox', 'RPG', '2023-02-10', 70, 49, 10),
+(18, '../images/6976a9616ca80mw3.webp', 'Call of Duty MW3', 'Activision', 'PC, PS5, Xbox', 'Shooter', '2023-11-10', 70, 65, 0),
+(19, '../images/6976a96a4c592among.webp', 'Among Us', 'Innersloth', 'PC, Consolas', 'Party', '2018-06-15', 5, 195, 0),
+(20, '../images/6976a98f380a4stard.webp', 'Stardew Valley', 'ConcernedApe', 'PC, Consolas', 'Simulación', '2016-02-26', 15, 144, 0);
 
 -- --------------------------------------------------------
 
@@ -129,6 +129,17 @@ CREATE TABLE `orders` (
   `clientEmail` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `orders`
+--
+
+INSERT INTO `orders` (`id`, `client_id`, `orderDate`, `status`, `total`, `paymentMethod`, `shippingAddress`, `clientEmail`) VALUES
+(7, 1, '2026-01-27 22:19:01', 'Cancelado', 442.50, 'Tarjeta', 'Calle Sol 1', 'ana1@mail.com'),
+(8, 2, '2026-01-27 22:19:23', 'Entregado', 416.00, 'Tarjeta', 'Av. Luna 2', 'carlos2@mail.com'),
+(9, 8, '2026-01-27 22:19:36', 'Enviado', 216.00, 'Paypal', 'Plaza Centro 8', 'david8@mail.com'),
+(10, 11, '2026-01-27 22:19:59', 'Pagado', 449.00, 'Bizum', 'Calle Roja 11', 'laura11@mail.com'),
+(11, 3, '2026-01-27 22:20:40', 'Pendiente', 462.50, 'Google Pay', 'Calle Mar 3', 'lucia3@mail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -143,6 +154,32 @@ CREATE TABLE `order_items` (
   `unitPrice` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `game_id`, `quantity`, `unitPrice`) VALUES
+(18, 7, 18, 1, 70.00),
+(19, 7, 15, 1, 48.00),
+(20, 7, 12, 1, 44.00),
+(21, 7, 5, 1, 60.00),
+(22, 7, 11, 1, 54.00),
+(23, 7, 14, 1, 54.00),
+(24, 7, 13, 3, 37.50),
+(25, 8, 9, 4, 49.00),
+(26, 8, 20, 4, 15.00),
+(27, 8, 6, 4, 30.00),
+(28, 8, 4, 1, 40.00),
+(29, 9, 1, 4, 54.00),
+(30, 10, 11, 1, 54.00),
+(31, 10, 19, 3, 5.00),
+(32, 10, 18, 4, 70.00),
+(33, 10, 10, 2, 50.00),
+(34, 11, 16, 3, 66.50),
+(35, 11, 2, 2, 59.50),
+(36, 11, 8, 2, 45.00),
+(37, 11, 14, 1, 54.00);
+
 -- --------------------------------------------------------
 
 --
@@ -155,6 +192,7 @@ CREATE TABLE `users` (
   `password` char(40) NOT NULL,
   `role` tinyint(4) NOT NULL,
   `name` varchar(40) NOT NULL,
+  `avatar` varchar(200) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -162,8 +200,10 @@ CREATE TABLE `users` (
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `role`, `name`, `created_at`) VALUES
-(1, 'clondireanug@gmail.com', '8bafac80a6603426da9f48787fde08689c33411c', 1, 'Gianni', '2025-12-01 10:29:51');
+INSERT INTO `users` (`id`, `email`, `password`, `role`, `name`, `avatar`, `created_at`) VALUES
+(1, 'clondireanug@gmail.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 1, 'Gianni', '6977472f7f126admin.jpg', '2025-12-01 10:29:51'),
+(2, 'luis02@gmail.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 0, 'Luis', 'UserCircle.svg', '2026-01-27 20:45:52'),
+(3, 'nico01@gmail.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 1, 'Nico', '6979249caf3932c7d99fe281ecd3bcd65ab915bac6dd5.jpg', '2026-01-27 20:48:28');
 
 --
 -- Índices para tablas volcadas
@@ -223,19 +263,19 @@ ALTER TABLE `games`
 -- AUTO_INCREMENT de la tabla `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas

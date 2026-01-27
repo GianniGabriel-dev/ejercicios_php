@@ -36,7 +36,7 @@
                 $stock       = $_POST["stock"];
                 $discount    = $_POST["discount"];
 
-                // Función para subir imagen
+                // Función para subir imagen localmente
                 function uploadPhoto()
                 {
                     $destino     = "../images/";
@@ -56,7 +56,7 @@
                     return false;
                 }
 
-                // Si se subió nueva imagen
+                // Si se sube un anueva imagen se cambia, si no, se amnteinen la actual
                 if (isset($_FILES["image"]) && ! empty($_FILES["image"]["name"])) {
                     $imagen = uploadPhoto();
                     if (! $imagen) {
