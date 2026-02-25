@@ -3,8 +3,10 @@
  @isset($titulo)
  <h2>{{ $titulo }}</h2>
  @endisset
- @isset($imgSrc, $imgAlt)
- <img src="{{asset('assets/images/'.$imgSrc)}}" alt={{$imgAlt}} width="128px"/>
+ @isset($imgSrc)
+ @isset($imgAlt)
+ <img src="{{asset('assets/images/'.$imgSrc)}}" alt="{{$imgAlt}}" width="128px"/>
+ @endisset
  @endisset
  @isset($contenido)
  <p>{{ $contenido }}</p>

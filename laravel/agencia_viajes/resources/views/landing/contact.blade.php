@@ -4,5 +4,5 @@
  <h1>Contacto</h1>
 @endsection
 @section('content')
- <p>Formulario de contacto.</p>
+ <img src="{{ asset('assets/images/map.png') }}" alt="Mapa de torrevieja">
 @endsection

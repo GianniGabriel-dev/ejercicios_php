@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+h2 {
+    color: #333;
+}
+p {
+    color: #666;
+}
+.card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    width: 350px;
+    height: 200px;
+}
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+}
+header div,
+nav {
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 1em;
+}
+nav ul {
+    display: flex;
+    font-size: 2em;
+    gap: 3em;
+    list-style-type: none;
+}
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+nav ul li a:hover {
+    text-decoration: underline;
+    color: #ddd;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgContainer {
+    position: relative;
+    height: max(800px, 70vh);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+/* Fondo difuminado */
+.imgContainer .background {
+    position: absolute;
+    inset: 0; /* top:0; bottom:0; left:0; right:0 */
+    background-image: url("../images/home.png");
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px); /* Difuminado */
+    z-index: 0; /* Detrás del contenido */
+}
+
+/* Contenido encima del fondo */
+.imgContainer .logo,
+.imgContainer p {
+    position: relative;
+    z-index: 1; /* Siempre encima del fondo */
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+.imgContainer h1 {
+    font-size: 3em;
+}
+
+.imgContainer p {
+    font-size: 2em;
+    font-weight: bolder;
+    width: 50%;
+}
+
+footer {
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    color: white;
+}
