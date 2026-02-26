@@ -1,3 +1,3 @@
 <footer>
-    <p>©SafeHome all rihgts reserved</p>
+    <p>©SafeTravel all rihgts reserved</p>
 </footer>
